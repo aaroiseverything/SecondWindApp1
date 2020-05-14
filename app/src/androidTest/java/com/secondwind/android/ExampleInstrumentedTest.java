@@ -1,4 +1,4 @@
-package com.rishav.gloginexample;
+package com.secondwind.android;
 
 import android.content.Context;
 

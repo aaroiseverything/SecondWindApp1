@@ -1,4 +1,4 @@
-package com.rishav.gloginexample;
+package com.secondwind.android;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
