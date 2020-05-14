@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1015199228918",
+    "firebase_url": "https://secondwind-android-7708e.firebaseio.com",
+    "project_id": "secondwind-android-7708e",
+    "storage_bucket": "secondwind-android-7708e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015199228918:android:f6e97bf97cc55f002addd7",
+        "android_client_info": {
+          "package_name": "com.secondwind.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015199228918-54tt8t10360r46nogsci3q8rc44p5525.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.secondwind.android",
+            "certificate_hash": "d4b4423d17820a2b18efa02da29d986743343179"
+          }
+        },
+        {
+          "client_id": "1015199228918-1km9kaep77brifh5pri222970qngp1s5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfkluILpWfHZheWpQIzSLxv1JQT8krccY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015199228918-1km9kaep77brifh5pri222970qngp1s5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
