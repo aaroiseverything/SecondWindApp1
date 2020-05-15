@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".SignUpActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,9 +22,24 @@
             android:src="@drawable/logo" />
 
         <EditText
+            android:id="@+id/userNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/input_background"
+            android:ems="10"
+            android:hint="@string/username"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:textSize="14sp" />
+
+        <EditText
             android:id="@+id/emailInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@drawable/input_background"
             android:ems="10"
             android:hint="@string/email"
@@ -51,37 +65,19 @@
             android:paddingBottom="10dp"
             android:textSize="14sp" />
 
-
-<!--        <TextView-->
-<!--            android:id="@+id/forgotPw"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:layout_marginBottom="20dp"-->
-<!--            android:gravity="right"-->
-<!--            android:text="@string/forgot_password" />-->
-
-
         <Button
-            android:id="@+id/authSignInButton"
+            android:id="@+id/authSignUpButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="4dp"
             android:background="@drawable/btn_background"
             android:minHeight="45dp"
-            android:text="@string/signIn"
+            android:text="@string/signUp"
             android:textAllCaps="false"
             android:textColor="#ffffff" />
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/googleSignInButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"></com.google.android.gms.common.SignInButton>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -89,21 +85,23 @@
 
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/signUpTwo" />
+                android:text="@string/signInTwo" />
+
             <TextView
                 android:id="@+id/signUp"
-                android:layout_marginLeft="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="goToSignUp"
+                android:layout_marginLeft="4dp"
                 android:clickable="true"
                 android:gravity="center"
-                android:textStyle="bold"
-                android:text="@string/signUp" />
+                android:onClick="signIn"
+                android:text="@string/signIn"
+                android:textStyle="bold" />
         </LinearLayout>
 
 
@@ -116,5 +114,4 @@
         <!--            android:textAllCaps="false"-->
         <!--            android:textColor="@color/colorPrimaryDark" />-->
     </LinearLayout>
-
 </RelativeLayout>

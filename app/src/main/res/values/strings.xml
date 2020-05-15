@@ -6,6 +6,18 @@
     <string name="videos">Videos</string>
     <string name="logout">Log out</string>
 
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="pw">Password</string>
+
+    <string name="signUpTwo">Don\'t have an account? </string>
+    <string name="signUp">Sign up</string>
+
+    <string name="signInTwo">Already have an account? </string>
+    <string name="signIn">Sign in</string>
+
+    <string name="forgot_password">Forgot your password?</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

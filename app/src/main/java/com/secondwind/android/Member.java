@@ -3,18 +3,18 @@ package com.secondwind.android;
 import android.net.Uri;
 
 public class Member {
-    private String Name, Email, Id, PhotoUrl;
+    private String Username, Email, GoogleId, LoginType, PhotoUrl;
 
     public Member() {
 
     }
 
-    public String getName() {
-        return Name;
+    public String getUsername() {
+        return Username;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setUsername(String name) {
+        Username = name;
     }
 
     public String getEmail() {
@@ -25,13 +25,23 @@ public class Member {
         Email = email;
     }
 
-    public String getId() {
-        return Id;
+
+    public void setLoginType(String loginType) {
+        LoginType = loginType;
     }
 
-    public void setId(String id) {
-        Id = id;
+    public String getLoginType() {
+        return LoginType;
     }
+
+    public void setId(String googleId) {
+        GoogleId = googleId;
+    }
+
+    public String getId() {
+        return GoogleId;
+    }
+
 
     public String getUri() {
         return PhotoUrl;

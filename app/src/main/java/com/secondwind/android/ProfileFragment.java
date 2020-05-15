@@ -17,24 +17,29 @@ import com.bumptech.glide.Glide;
 
 public class ProfileFragment extends Fragment {
 
-    TextView userNameView, userEmailView, userIdView;
+    TextView userNameView, userEmailView;
     ImageView profileImage;
+
+    SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        sharedPreferences = this.getContext().getSharedPreferences("sharedPrefs", this.getContext().MODE_PRIVATE);
 
         userNameView = (TextView) view.findViewById(R.id.name);
         userEmailView = (TextView) view.findViewById(R.id.email);
         profileImage = (ImageView) view.findViewById(R.id.profileImage);
 
-        SharedPreferences sharedPreferences = this.getContext().getSharedPreferences("sharedPrefs", this.getContext().MODE_PRIVATE);
-
         userNameView.setText(sharedPreferences.getString("userName", ""));
         userEmailView.setText(sharedPreferences.getString("userEmail", ""));
 
-        Uri profileImageUri = Uri.parse(sharedPreferences.getString("userPhotoUrl", ""));
+        String profileImageString = sharedPreferences.getString("userPhotoUrl", "");
+        if (profileImageString.length() <= 0) {
+            return view;
+        }
+        Uri profileImageUri = Uri.parse(profileImageString);
 
         try {
             Glide.with(this.getContext()).load(profileImageUri).into(profileImage);

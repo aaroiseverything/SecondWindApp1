@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,15 +29,12 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
@@ -46,29 +42,35 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions gso;
+    private FirebaseAuth mAuth;
 
     String userName;
     String userEmail;
-    String userId;
+    String userGoogleId;
     Uri userPhotoUrl;
 
     Member member;
 
-//    TextView userNameView,userEmailView,userIdView;
-//    ImageView profileImage;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
+    DatabaseReference rref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-//        userNameView=(TextView)findViewById(R.id.name);
-//        userEmailView=(TextView)findViewById(R.id.email);
-//        userIdView=(TextView)findViewById(R.id.userId);
-//        profileImage=(ImageView)findViewById(R.id.profileImage);
+        sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
-        // sign in
+        // Initialize Firebase
+        mAuth = FirebaseAuth.getInstance();
+        rref = FirebaseDatabase.getInstance().getReference().child("Members");
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        // Initialise google variables
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -78,6 +80,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+        // Initialise Logout btn in menu
         navigationView.getMenu().findItem(R.id.logout).setOnMenuItemClickListener(menuItem -> {
             Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
                     new ResultCallback<Status>() {
@@ -93,13 +96,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             return true;
         });
 
-        // menu
+        // Initialise menu
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
         navigationView.setNavigationItemSelectedListener(this);
-
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -110,6 +112,32 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String loginMethod = sharedPreferences.getString("loginMethod", "");
+
+        switch (loginMethod) {
+            case "google":
+                OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+                if (opr.isDone()) {
+                    GoogleSignInResult result = opr.get();
+                    googleSignInResult(result);
+                } else {
+                    opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                        @Override
+                        public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
+                            googleSignInResult(googleSignInResult);
+                        }
+                    });
+                }
+                break;
+            case "auth":
+                authSignInResult();
+                break;
         }
     }
 
@@ -148,78 +176,107 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // saves user data to shared preferences + show in nav header + add to firebase
-    private void handleSignInResult(GoogleSignInResult result) {
-
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-
+    private void googleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
-
             // add to shared preferences
             GoogleSignInAccount account = result.getSignInAccount();
             userName = account.getDisplayName();
             userEmail = account.getEmail();
-            userId = account.getId();
+            userGoogleId = account.getId();
             userPhotoUrl = account.getPhotoUrl();
 
             editor.putString("userName", userName);
             editor.putString("userEmail", userEmail);
-            editor.putString("userId", userId);
+            editor.putString("userGoogleId", userGoogleId);
             editor.putString("userPhotoUrl", userPhotoUrl.toString());
 
             editor.apply();
 
-            // add to header
-            NavigationView navigationView = findViewById(R.id.nav_view);
-            View header = navigationView.getHeaderView(0);
+            // update header
+            updateHeader(userName, userEmail, userPhotoUrl);
 
-            TextView userNameView = (TextView) header.findViewById(R.id.menu_name);
-            TextView userEmailView = (TextView) header.findViewById(R.id.menu_email);
-            ImageView userPhotoView = (ImageView) header.findViewById(R.id.menu_photo);
-
-            userNameView.setText(userName);
-            userEmailView.setText(userEmail);
-
-            try {
-                Glide.with(this).load(userPhotoUrl).into(userPhotoView);
-            } catch (NullPointerException e) {
-                Toast.makeText(this, "image not found", Toast.LENGTH_LONG).show();
-            }
-
-            // add to firebase
-            DatabaseReference rref;
-            rref = FirebaseDatabase.getInstance().getReference().child("Members");
-
+            // add to firebase users
             member = new Member();
-            member.setName(userName);
+            member.setUsername(userName);
             member.setEmail(userEmail);
-            member.setId(userId);
+            member.setId(userGoogleId);
             member.setUri(userPhotoUrl);
+            member.setLoginType("google");
 
-            // adds new member to db if does not already exists, updates user data if exists
-            rref.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(
-                    new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String key;
-                            if (dataSnapshot.exists()) {
-                                key = dataSnapshot.getChildren().iterator().next().getKey();
-                            } else {
-                                key = rref.push().getKey();
-                            }
-                            rref.child(key).setValue(member);
-                        }
+            updateDbUserData(member);
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
-                    }
-            );
             Toast.makeText(this, "Logged in", Toast.LENGTH_SHORT).show();
         } else {
             gotoMainActivity();
         }
+    }
+
+    private void authSignInResult() {
+        userEmail = sharedPreferences.getString("userEmail", "");
+        rref.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            userName = dataSnapshot.getChildren().iterator().next().getValue(Member.class).getUsername();
+                            editor.putString("userName", userName);
+                            editor.apply();
+                            updateHeader(userName, userEmail, Uri.parse(""));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                }
+        );
+    }
+
+
+    private void updateHeader(String userName, String userEmail, Uri userPhotoUrl) {
+        // add to header
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+
+        TextView userNameView = (TextView) header.findViewById(R.id.menu_name);
+        TextView userEmailView = (TextView) header.findViewById(R.id.menu_email);
+        ImageView userPhotoView = (ImageView) header.findViewById(R.id.menu_photo);
+
+        userNameView.setText(userName);
+        userEmailView.setText(userEmail);
+
+        if (userPhotoUrl.toString().length() <= 0) {
+            return;
+        }
+
+        try {
+            Glide.with(this).load(userPhotoUrl).into(userPhotoView);
+        } catch (NullPointerException e) {
+            Toast.makeText(this, "image not found", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // adds new member to db if does not already exists, updates user data if exists
+    private void updateDbUserData(Member member) {
+        rref.orderByChild("email").equalTo(member.getEmail()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String key;
+                        if (dataSnapshot.exists()) {
+                            key = dataSnapshot.getChildren().iterator().next().getKey();
+                        } else {
+                            // new user
+                            key = rref.push().getKey();
+                        }
+                        rref.child(key).setValue(member);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                }
+        );
     }
 
     private void gotoMainActivity() {
@@ -228,20 +285,4 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
-        if (opr.isDone()) {
-            GoogleSignInResult result = opr.get();
-            handleSignInResult(result);
-        } else {
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
-                    handleSignInResult(googleSignInResult);
-                }
-            });
-        }
-    }
 }
