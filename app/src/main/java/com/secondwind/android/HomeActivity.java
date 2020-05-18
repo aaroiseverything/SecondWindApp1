@@ -36,6 +36,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.Key;
+
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
@@ -200,7 +202,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             member.setUsername(userName);
             member.setEmail(userEmail);
             member.setId(userGoogleId);
-            member.setUri(userPhotoUrl);
+            member.setPhotoUrl(userPhotoUrl.toString());
             member.setLoginType("google");
 
             updateDbUserData(member);
@@ -212,16 +214,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void authSignInResult() {
+
+        // user is already added to db during sign up
         userEmail = sharedPreferences.getString("userEmail", "");
+
         rref.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            userName = dataSnapshot.getChildren().iterator().next().getValue(Member.class).getUsername();
-                            editor.putString("userName", userName);
-                            editor.apply();
-                            updateHeader(userName, userEmail, Uri.parse(""));
+
+                        for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                            member = appleSnapshot.getValue(Member.class);
+                            String loginType = member.getLoginType().trim();
+                            if (loginType.equals("auth")) {
+                                Log.d("debug", String.valueOf(member));
+                                userName = member.getUsername();
+                                String userPhotoUrlString = member.getPhotoUrl();
+                                editor.putString("userPhotoUrl", userPhotoUrlString);
+                                editor.putString("userName", userName);
+                                editor.apply();
+
+                                updateHeader(userName, userEmail, Uri.parse(userPhotoUrlString));
+                            }
                         }
                     }
 

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="176dp"
-    android:background="@drawable/profile_background"
+    android:background="@drawable/nav_background"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
@@ -10,8 +10,7 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/menu_photo"
         android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@mipmap/ic_launcher_round" />
+        android:layout_height="60dp" />
     <TextView
         android:id="@+id/menu_name"
         android:layout_width="wrap_content"

@@ -103,7 +103,8 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:text="@string/signUp" />
+                android:text="@string/signUp"
+                android:focusable="true" />
         </LinearLayout>
 
 

@@ -18,6 +18,8 @@
 
     <string name="forgot_password">Forgot your password?</string>
 
+    <string name="generate_workout">Generate workout</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

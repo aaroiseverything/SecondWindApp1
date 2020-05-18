@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             return;
         }
 
-
         mAuth.signInWithEmailAndPassword(email, pw).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

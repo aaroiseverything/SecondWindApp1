@@ -43,11 +43,11 @@ public class Member {
     }
 
 
-    public String getUri() {
+    public String getPhotoUrl() {
         return PhotoUrl;
     }
 
-    public void setUri(Uri photoUrl) {
-        PhotoUrl = photoUrl.toString();
+    public void setPhotoUrl(String photoUrl) {
+        PhotoUrl = photoUrl;
     }
 }
