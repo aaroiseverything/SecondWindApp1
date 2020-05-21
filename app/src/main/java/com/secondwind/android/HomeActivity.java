@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,7 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.security.Key;
 
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,HomeFragment.onFragmentBtnSelected, GoogleApiClient.OnConnectionFailedListener {
 
     private DrawerLayout drawer;
     private GoogleApiClient googleApiClient;
@@ -50,6 +52,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     String userEmail;
     String userGoogleId;
     Uri userPhotoUrl;
+    //21MayAaron
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
 
     Member member;
 
@@ -115,6 +120,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
+
+        //Initialize Fragment  21MayAaron
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, new HomeFragment());
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -298,5 +309,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         startActivity(intent);
     }
 
-
+    //21May Aaron
+    @Override
+    public void onButtonSelected() {
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container,new ProfileFragment()).commit(); // idk why cannot go UpdateProfile.java
+        //fragmentTransaction.commit();
+    }
 }
