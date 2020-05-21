@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
+    android:orientation="vertical"
     >
 
     <Button
-        android:id="@+id/authSignUpButton"
+        android:id="@+id/exerciseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
@@ -15,7 +17,28 @@
         android:layout_marginRight="4dp"
         android:background="@drawable/btn_background"
         android:minHeight="45dp"
-        android:text="@string/generate_workout"
+        android:text="@string/first_workout"
         android:textAllCaps="false"
         android:textColor="#ffffff" />
-</RelativeLayout>
+
+    <Button
+        android:id="@+id/generateWorkoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="4dp"
+        android:background="@drawable/btn_background"
+        android:minHeight="45dp"
+        android:text="@string/update_profile"
+        android:textAllCaps="false"
+        android:textColor="#ffffff" />
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/profiling_exercises" />
+</LinearLayout>

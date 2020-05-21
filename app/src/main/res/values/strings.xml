@@ -18,8 +18,12 @@
 
     <string name="forgot_password">Forgot your password?</string>
 
-    <string name="generate_workout">Generate workout</string>
+    <string name="first_workout">Complete 5 exercises to get customised workout</string>
+    <string name="update_profile">Update Profile</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
