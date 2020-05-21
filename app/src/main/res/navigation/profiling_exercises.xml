@@ -5,22 +5,10 @@
     android:id="@+id/profiling_exercises"
     app:startDestination="@id/homeFragment">
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.secondwind.android.HomeFragment"
-        android:label="HomeFragment" >
-        <action
-            android:id="@+id/action_homeFragment_to_exerciseOneFragment"
-            app:destination="@id/exerciseOneFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/exerciseTwoFragment"
         android:name="com.secondwind.android.ExerciseTwoFragment"
         android:label="fragment_exercise_two"
-        tools:layout="@layout/fragment_exercise_two" >
-        <action
-            android:id="@+id/action_exerciseTwoFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_exercise_two" />
     <fragment
         android:id="@+id/exerciseOneFragment"
         android:name="com.secondwind.android.ExerciseOneFragment"
@@ -29,5 +17,13 @@
         <action
             android:id="@+id/action_exerciseOneFragment_to_exerciseTwoFragment"
             app:destination="@id/exerciseTwoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.secondwind.android.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_exerciseOneFragment"
+            app:destination="@id/exerciseOneFragment" />
     </fragment>
 </navigation>
