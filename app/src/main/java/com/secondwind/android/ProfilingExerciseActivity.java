@@ -30,7 +30,7 @@ public class ProfilingExerciseActivity extends AppCompatActivity implements Exer
 
     public void updateFirebaseProfiling(String field, String input) {
         Map<String, Object> userUpdates = new HashMap<>();
-        userUpdates.put(firebaseKey + field, input);
+        userUpdates.put(firebaseKey + "/profilingExercises" + field, input);
         rref.updateChildren(userUpdates);
     }
 
