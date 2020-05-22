@@ -23,7 +23,7 @@
         android:textColor="#ffffff" />
 
     <Button
-        android:id="@+id/generateWorkoutButton"
+        android:id="@+id/updateProfileButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
