@@ -1,5 +1,6 @@
 package com.secondwind.android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,21 +21,19 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-//        NavController navController = Navigation.findNavController(view);
+        view = inflater.inflate(R.layout.fragment_home, container, false);
 
         exerciseButton = (Button) view.findViewById(R.id.exerciseButton);
         exerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                navController.navigate(R.id.action_homeFragment_to_exerciseOneFragment);
+                Intent intent = new Intent(getActivity(), ProfilingExerciseActivity.class);
+                startActivity(intent);
             }
         });
+
+        return view;
 
     }
 }

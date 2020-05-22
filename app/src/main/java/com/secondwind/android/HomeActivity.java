@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -37,6 +38,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.security.Key;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
@@ -58,6 +61,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     DatabaseReference rref;
 
+    String firebaseKey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +70,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         editor = sharedPreferences.edit();
+
+        firebaseKey = sharedPreferences.getString("firebaseKey", "");
 
         // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
@@ -205,13 +212,48 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             member.setPhotoUrl(userPhotoUrl.toString());
             member.setLoginType("google");
 
-            updateDbUserData(member);
+            rref.orderByChild("email").equalTo(member.getEmail()).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String key;
+                            if (dataSnapshot.exists()) {
+                                key = dataSnapshot.getChildren().iterator().next().getKey();
 
-            Toast.makeText(this, "Logged in", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // new user
+                                key = rref.push().getKey();
+                            }
+                            editor.putString("firebaseKey", key);
+                            editor.apply();
+
+                            Map<String, Object> userUpdates = new HashMap<>();
+
+                            userUpdates.put(key + "/username", userName);
+                            userUpdates.put(key + "/googleId", userGoogleId);
+                            userUpdates.put(key + "/photoUrl", userPhotoUrl.toString());
+                            userUpdates.put(key + "/loginType", "google");
+                            userUpdates.put(key + "/email", userEmail);
+
+                            rref.updateChildren(userUpdates);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    }
+            );
+
         } else {
             gotoMainActivity();
         }
     }
+
+//    public void updateFirebaseProfiling(String field, String input) {
+//        Map<String, Object> userUpdates = new HashMap<>();
+//        userUpdates.put(firebaseKey + field, input);
+//        rref.updateChildren(userUpdates);
+//    }
 
     private void authSignInResult() {
 
@@ -227,7 +269,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             member = appleSnapshot.getValue(Member.class);
                             String loginType = member.getLoginType().trim();
                             if (loginType.equals("auth")) {
-                                Log.d("debug", String.valueOf(member));
+                                String key = appleSnapshot.getKey();
+                                editor.putString("firebaseKey", key);
+
                                 userName = member.getUsername();
                                 String userPhotoUrlString = member.getPhotoUrl();
                                 editor.putString("userPhotoUrl", userPhotoUrlString);
@@ -270,28 +314,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    // adds new member to db if does not already exists, updates user data if exists
-    private void updateDbUserData(Member member) {
-        rref.orderByChild("email").equalTo(member.getEmail()).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String key;
-                        if (dataSnapshot.exists()) {
-                            key = dataSnapshot.getChildren().iterator().next().getKey();
-                        } else {
-                            // new user
-                            key = rref.push().getKey();
-                        }
-                        rref.child(key).setValue(member);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                }
-        );
-    }
 
     private void gotoMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
