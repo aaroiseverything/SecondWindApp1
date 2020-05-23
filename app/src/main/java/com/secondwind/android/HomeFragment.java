@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +16,8 @@ import androidx.fragment.app.Fragment;
 public class HomeFragment extends Fragment {
     //21May Aaron
     private onFragmentBtnSelected listener;
-    Button exerciseButton;
+    private RelativeLayout exerciseButton;
+    private RelativeLayout updateProfile;
     View view;
 
     @Nullable
@@ -24,8 +26,8 @@ public class HomeFragment extends Fragment {
         //21May Aaron
         //super.onViewCreated(view, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        Button updateProfile = (Button) view.findViewById(R.id.updateProfileButton);
-        exerciseButton = (Button) view.findViewById(R.id.exerciseButton);
+        updateProfile = view.findViewById(R.id.updateProfileButton);
+        exerciseButton = (RelativeLayout) view.findViewById(R.id.exerciseButton);
         exerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -9,8 +9,7 @@
     <RelativeLayout
         android:layout_width="630dp"
         android:layout_height="170dp"
-        android:layout_gravity="center"
-        android:background="@drawable/profile_background">
+        android:layout_gravity="center">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"

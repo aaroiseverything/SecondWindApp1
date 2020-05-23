@@ -106,6 +106,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Initialise menu
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         drawer = findViewById(R.id.drawer_layout);
         navigationView.setNavigationItemSelectedListener(this);

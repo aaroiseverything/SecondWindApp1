@@ -25,6 +25,8 @@
     <!--home-->
     <string name="first_workout">Complete 5 exercises to get customised workout</string>
     <string name="update_profile">Update Profile</string>
+    <string name="welcome">Welcome!</string>
+    <string name="welcome_description">Complete your first five exercises to receive a workout specially tailored for you</string>
 
     <string name="default_profile_pic_url" tools:ignore="TypographyDashes"><![CDATA[https://firebasestorage.googleapis.com/v0/b/secondwind-android-7708e.appspot.com/o/profilepics%2Fdefault.png?alt=media&token=cb294446-ff32-4c83-9adf-e044f7663443]]></string>
 
@@ -86,5 +88,6 @@
     <string name="firebase_key_profiling_exercises">/profilingExercises</string>
     <string name="firebase_key_planks">/testPlanks</string>
     <string name="firebase_key_pushups">/testPushups</string>
+
 
 </resources>
