@@ -28,17 +28,16 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     DatabaseReference rref;
-
-    SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
-    Button signUpButton;
-    EditText usernameInput, emailInput, pwInput;
-    Member member;
+    private FirebaseAuth mAuth;
 
-    String defaultProfilePic;
+    private Button signUpButton;
+    private String defaultProfilePic;
+    private EditText usernameInput, emailInput, pwInput;
+    private Member member;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        rref = FirebaseDatabase.getInstance().getReference().child("Members");
+        rref = FirebaseDatabase.getInstance().getReference().child(getString(R.string.firebase_db_members));
 
         usernameInput = findViewById(R.id.userNameInput);
         emailInput = findViewById(R.id.emailInput);
@@ -61,7 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        defaultProfilePic = "https://firebasestorage.googleapis.com/v0/b/secondwind-android-7708e.appspot.com/o/profilepics%2Fdefault.png?alt=media&token=cb294446-ff32-4c83-9adf-e044f7663443";
+        defaultProfilePic = getString(R.string.default_profile_pic_url);
     }
 
     private void registerUser() {
@@ -70,33 +69,33 @@ public class SignUpActivity extends AppCompatActivity {
         String pw = pwInput.getText().toString().trim();
 
         if (username.isEmpty()) {
-            usernameInput.setError("Username is required.");
+            usernameInput.setError(getString(R.string.error_msg_username_required));
             usernameInput.requestFocus();
             return;
         }
         if (email.isEmpty()) {
-            emailInput.setError("Email is required.");
+            emailInput.setError(getString(R.string.error_msg_email_required));
             emailInput.requestFocus();
             return;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailInput.setError("Please enter a valid email.");
+            emailInput.setError(getString(R.string.error_msg_invalid_email));
             emailInput.requestFocus();
             return;
         }
         if (pw.isEmpty()) {
-            pwInput.setError("Password is required.");
+            pwInput.setError(getString(R.string.error_msg_pw_required));
             pwInput.requestFocus();
             return;
         }
         if (pw.length() < 6) {
-            pwInput.setError("Password should be more than 6 characters.");
+            pwInput.setError(getString(R.string.error_msg_pw_length));
             pwInput.requestFocus();
             return;
         }
 
         // check if already have google account
-        rref.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(
+        rref.orderByChild(getString(R.string.firebase_key_email)).equalTo(email).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -104,8 +103,8 @@ public class SignUpActivity extends AppCompatActivity {
                         // do not allow users to sign up using auth mth if they have already signed up using google account
                         if (dataSnapshot.exists()) {
                             String loginType = dataSnapshot.getChildren().iterator().next().getValue(Member.class).getLoginType();
-                            if (loginType != "auth") {
-                                Toast.makeText(getApplicationContext(), "You have already signed up using your Google Account.", Toast.LENGTH_LONG).show();
+                            if (loginType != getString(R.string.login_type_auth)) {
+                                Toast.makeText(getApplicationContext(), R.string.error_msg_existing_google_account, Toast.LENGTH_LONG).show();
                             }
                         } else {
                             createUser(username, email, pw);
@@ -128,17 +127,17 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             updateProfilePic(); // add to firebase auth
                             addUserToDb(username, email); // add to firebase db
-                            editor.putString("userPhotoUrl", defaultProfilePic); // add to shared preferences
+                            editor.putString(getString(R.string.shared_prefs_key_user_photo_url), defaultProfilePic); // add to shared preferences
                             editor.apply();
-                            Toast.makeText(getApplicationContext(), "Registered successfully.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), R.string.success_msg_registered, Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                             startActivity(intent);
                         } else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                Toast.makeText(SignUpActivity.this, "You are already registered.",
+                                Toast.makeText(SignUpActivity.this, R.string.error_msg_registered,
                                         Toast.LENGTH_SHORT).show();
                             }
-                            Toast.makeText(SignUpActivity.this, "Sign up failed.",
+                            Toast.makeText(SignUpActivity.this, R.string.error_msg_signup_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -163,7 +162,7 @@ public class SignUpActivity extends AppCompatActivity {
         member.setEmail(email);
         member.setUsername(username);
         member.setPhotoUrl(defaultProfilePic);
-        member.setLoginType("auth");
+        member.setLoginType(getString(R.string.login_type_auth));
 
         rref.push().setValue(member);
     }

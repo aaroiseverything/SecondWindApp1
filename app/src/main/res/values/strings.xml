@@ -1,11 +1,15 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Second Wind Nation</string>
 
+    <!--nav bar-->
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="videos">Videos</string>
     <string name="logout">Log out</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!--signup and login-->
     <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="pw">Password</string>
@@ -18,25 +22,69 @@
 
     <string name="forgot_password">Forgot your password?</string>
 
+    <!--home-->
     <string name="first_workout">Complete 5 exercises to get customised workout</string>
     <string name="update_profile">Update Profile</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="default_profile_pic_url" tools:ignore="TypographyDashes"><![CDATA[https://firebasestorage.googleapis.com/v0/b/secondwind-android-7708e.appspot.com/o/profilepics%2Fdefault.png?alt=media&token=cb294446-ff32-4c83-9adf-e044f7663443]]></string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="play">Play</string>
+    <!--profiling exercises-->
     <string name="ex_1_title">Exercise 1: Number of pushups in 1 min</string>
     <string name="ex_1_description">- Do as many push ups as you can in 1min \n- Keep your body in a straight line from head to toe \n - Refrain from arching your back</string>
+    <string name="number_of_pushups_done">Number of pushups done:</string>
     <string name="next_exercise_btn">Next</string>
     <string name="number_of_reps">Number of reps</string>
     <string name="complete">Complete</string>
     <string name="ex_2_description">- Keep shoulders, hips and ankle in single plane</string>
     <string name="ex_2_title">Exercise 2: Holding a plank</string>
     <string name="reset">Reset</string>
-    <string name="pause_ex">Press to pause or end</string>
-    <string name="continue_ex">Press to continue</string>
-    <string name="start_ex">Press to start</string>
+    <string name="pause_ex">Pause/End</string>
+    <string name="continue_ex">Continue</string>
+    <string name="start_ex">Start</string>
     <string name="finished">Finished</string>
+
+    <!--youtube vids-->
+    <string name="youtube_two_id">XxbuY3xAFgY</string>
+    <string name="youtube_one_id">5pMUGFTo5GU</string>
+
+    <!--login type values-->
+    <string name="login_type_google">google</string>
+    <string name="login_type_auth">auth</string>
+
+    <!--shared preferences-->
+    <string name="shared_prefs_name">sharedPrefs</string>
+    <string name="shared_prefs_key_firebasekey">firebaseKey</string>
+    <string name="shared_prefs_key_login_method">loginMethod</string>
+    <string name="shared_prefs_key_username">userName</string>
+    <string name="shared_prefs_key_email">userEmail</string>
+    <string name="shared_prefs_key_google_id">userGoogleId</string>
+    <string name="shared_prefs_key_user_photo_url">userPhotoUrl</string>
+
+    <!--error messages-->
+    <string name="error_msg_pw_required">Password is required.</string>
+    <string name="error_msg_google_signin_failed">Sign in cancel</string>
+    <string name="error_msg_image_not_found">Image not found</string>
+    <string name="error_msg_signup_failed">Sign up failed.</string>
+    <string name="error_msg_registered">You are already registered.</string>
+    <string name="error_msg_pw_length">Password should be more than 6 characters.</string>
+    <string name="error_msg_invalid_email">Please enter a valid email.</string>
+    <string name="error_msg_username_required">Username is required.</string>
+    <string name="error_msg_existing_google_account">You have already signed up using your Google Account.</string>
+    <string name="error_msg_email_required">Email is required.</string>
+    <string name="error_msg_enter_number">Please enter a number.</string>
+
+    <!--success messages-->
+    <string name="success_msg_registered">Registered successfully.</string>
+
+    <!--firebase-->
+    <string name="firebase_db_members">Members</string>
+    <string name="firebase_key_email">email</string>
+    <string name="firebase_key_username">username</string>
+    <string name="firebase_key_google_id">googleId</string>
+    <string name="firebase_key_photo_url">photoUrl</string>
+    <string name="firebase_key_login_type">loginType</string>
+    <string name="firebase_key_profiling_exercises">/profilingExercises</string>
+    <string name="firebase_key_planks">/testPlanks</string>
+    <string name="firebase_key_pushups">/testPushups</string>
+
 </resources>

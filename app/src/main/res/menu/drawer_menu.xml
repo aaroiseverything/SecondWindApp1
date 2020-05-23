@@ -9,10 +9,10 @@
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_profile"
             android:title="@string/profile" />
-        <item
-            android:id="@+id/nav_vid"
-            android:icon="@drawable/ic_vid"
-            android:title="@string/videos" />
+<!--        <item-->
+<!--            android:id="@+id/nav_vid"-->
+<!--            android:icon="@drawable/ic_vid"-->
+<!--            android:title="@string/videos" />-->
         <item
             android:id="@+id/logout"
             android:icon="@drawable/ic_logout"

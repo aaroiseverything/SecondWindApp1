@@ -14,11 +14,6 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link YoutubeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class YoutubeFragment extends Fragment {
     private static final String YOUTUBE_API_KEY = YoutubeConfig.getApiKey();
 

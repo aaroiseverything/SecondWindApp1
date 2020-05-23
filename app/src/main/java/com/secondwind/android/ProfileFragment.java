@@ -61,9 +61,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
-        sharedPreferences = this.getContext().getSharedPreferences("sharedPrefs", this.getContext().MODE_PRIVATE);
+        sharedPreferences = this.getContext().getSharedPreferences(getString(R.string.shared_prefs_name), this.getContext().MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        rref = FirebaseDatabase.getInstance().getReference().child("Members");
+        rref = FirebaseDatabase.getInstance().getReference().child(getString(R.string.firebase_db_members));
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -72,10 +72,10 @@ public class ProfileFragment extends Fragment {
         userEmailView = (TextView) view.findViewById(R.id.email);
         profileImage = (ImageView) view.findViewById(R.id.profileImage);
 
-        userEmail = sharedPreferences.getString("userEmail", "");
-        loginMethod = sharedPreferences.getString("loginMethod", "");
+        userEmail = sharedPreferences.getString(getString(R.string.shared_prefs_key_email), "");
+        loginMethod = sharedPreferences.getString(getString(R.string.shared_prefs_key_login_method), "");
 
-        userNameView.setText(sharedPreferences.getString("userName", ""));
+        userNameView.setText(sharedPreferences.getString(getString(R.string.shared_prefs_key_username), ""));
         userEmailView.setText(userEmail);
 
 //        profileImage.setOnClickListener(new View.OnClickListener() {
@@ -90,12 +90,12 @@ public class ProfileFragment extends Fragment {
 //        });
 
         // set photo url
-        String profileImageString = sharedPreferences.getString("userPhotoUrl", "");
+        String profileImageString = sharedPreferences.getString(getString(R.string.shared_prefs_key_user_photo_url), "");
         Uri profileImageUri = Uri.parse(profileImageString);
         try {
             Glide.with(this.getContext()).load(profileImageUri).into(profileImage);
         } catch (NullPointerException e) {
-            Toast.makeText(getActivity(), "image not found", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.error_msg_image_not_found, Toast.LENGTH_LONG).show();
         }
 //        if (profileImageString.length() <= 0) {
 //            return view;

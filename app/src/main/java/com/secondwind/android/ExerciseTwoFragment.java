@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.util.Locale;
@@ -39,6 +40,7 @@ public class ExerciseTwoFragment extends Fragment {
     private boolean mTimerRunning;
     private Chronometer mChronometer;
     private long pauseOffset = 0;
+    private LinearLayout mChronometerWrapper;
 
 
     public ExerciseTwoFragment() {
@@ -59,7 +61,7 @@ public class ExerciseTwoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        youtubeFragment = YoutubeFragment.newInstance("XxbuY3xAFgY");
+        youtubeFragment = YoutubeFragment.newInstance(getString(R.string.youtube_two_id));
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.flYoutube, youtubeFragment).commit();
     }
@@ -77,10 +79,11 @@ public class ExerciseTwoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
         mChronometer = view.findViewById(R.id.chronometer);
-        mProgressBar = view.findViewById(R.id.progressTwo);
-        mTextViewInfo = view.findViewById(R.id.startOrPauseTwo);
-        mResetBtn = view.findViewById(R.id.resetBtnTwo);
-        mNextExBtn = view.findViewById(R.id.nextExBtnTwo);
+        mProgressBar = view.findViewById(R.id.progressBar);
+        mTextViewInfo = view.findViewById(R.id.startBtnInfo);
+        mResetBtn = view.findViewById(R.id.resetBtn);
+        mNextExBtn = view.findViewById(R.id.nextExBtn);
+        mChronometerWrapper = view.findViewById(R.id.chronometerWrapper);
 
         mResetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +100,7 @@ public class ExerciseTwoFragment extends Fragment {
             }
         });
 
-        mChronometer.setOnClickListener(new View.OnClickListener() {
+        mChronometerWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 youtubeFragment.pauseVid();
@@ -173,7 +176,7 @@ public class ExerciseTwoFragment extends Fragment {
 
     private void checkAndUpdateResult() {
         String input = String.valueOf((int) pauseOffset / 1000);
-        callback.updateFirebaseProfiling("/testPlanks", input);
+        callback.updateFirebaseProfiling(getString(R.string.firebase_key_planks), input);
         callback.onProfilingEnd();
     }
 }

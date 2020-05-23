@@ -6,12 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -42,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(getString(R.string.shared_prefs_name), MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
         resetPreferences();
@@ -80,11 +77,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void resetPreferences() {
-        editor.putString("loginMethod", "");
-        editor.putString("userEmail", "");
-        editor.putString("userName", "");
-        editor.putString("userGoogleId", "");
-        editor.putString("userPhotoUrl", "");
+        editor.putString(getString(R.string.shared_prefs_key_login_method), "");
+        editor.putString(getString(R.string.shared_prefs_key_email), "");
+        editor.putString(getString(R.string.shared_prefs_key_username), "");
+        editor.putString(getString(R.string.shared_prefs_key_google_id), "");
+        editor.putString(getString(R.string.shared_prefs_key_user_photo_url), "");
         editor.apply();
     }
 
@@ -93,12 +90,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         String pw = pwInput.getText().toString().trim();
 
         if (email.isEmpty()) {
-            emailInput.setError("Email is required.");
+            emailInput.setError(getString(R.string.error_msg_email_required));
             emailInput.requestFocus();
             return;
         }
         if (pw.isEmpty()) {
-            pwInput.setError("Password is required.");
+            pwInput.setError(getString(R.string.error_msg_pw_required));
             pwInput.requestFocus();
             return;
         }
@@ -107,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    editor.putString("loginMethod", "auth");
-                    editor.putString("userEmail", email);
+                    editor.putString(getString(R.string.shared_prefs_key_login_method), getString(R.string.login_type_auth));
+                    editor.putString(getString(R.string.shared_prefs_key_email), email);
                     editor.apply();
                     gotoHome();
                 } else {
@@ -129,11 +126,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void googleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
-            editor.putString("loginMethod", "google");
+            editor.putString(getString(R.string.shared_prefs_key_login_method), getString(R.string.login_type_google));
             editor.apply();
             gotoHome();
         } else {
-            Toast.makeText(getApplicationContext(), "Sign in cancel", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.error_msg_google_signin_failed, Toast.LENGTH_LONG).show();
         }
     }
 

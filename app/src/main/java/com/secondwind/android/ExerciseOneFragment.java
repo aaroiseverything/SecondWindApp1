@@ -17,7 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -33,7 +34,6 @@ public class ExerciseOneFragment extends Fragment {
     NavController navController;
 
     private Button mNextExBtn;
-    private EditText resultInput;
     private boolean finished;
     private long startTimeInSeconds;
     private TextView mTextViewCountdown;
@@ -44,7 +44,8 @@ public class ExerciseOneFragment extends Fragment {
     private Button mResetBtn;
     private boolean mTimerRunning;
     private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
-
+    private LinearLayout mCountdownWrapper;
+    private NumberPicker mPicker;
 
     public ExerciseOneFragment() {
         // Required empty public constructor
@@ -56,7 +57,7 @@ public class ExerciseOneFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         startTimeInSeconds = (int) START_TIME_IN_MILLIS / 1000;
-        youtubeFragment = YoutubeFragment.newInstance("5pMUGFTo5GU");
+        youtubeFragment = YoutubeFragment.newInstance(getString(R.string.youtube_one_id));
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.flYoutube, youtubeFragment).commit();
     }
@@ -73,12 +74,16 @@ public class ExerciseOneFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        resultInput = view.findViewById(R.id.resultInput);
-        mNextExBtn = view.findViewById(R.id.nextExBtnOne);
-        mTextViewCountdown = view.findViewById(R.id.countdownOne);
-        mProgressBar = view.findViewById(R.id.progressOne);
-        mTextViewInfo = view.findViewById(R.id.startOrPauseOne);
-        mResetBtn = view.findViewById(R.id.resetBtnOne);
+        mNextExBtn = view.findViewById(R.id.nextExBtn);
+        mTextViewCountdown = view.findViewById(R.id.countdown);
+        mProgressBar = view.findViewById(R.id.progressBar);
+        mTextViewInfo = view.findViewById(R.id.startBtnInfo);
+        mResetBtn = view.findViewById(R.id.resetBtn);
+        mCountdownWrapper = view.findViewById(R.id.countdownWrapper);
+
+        mPicker = view.findViewById(R.id.numberPicker);
+        mPicker.setMaxValue(100);
+        mPicker.setMinValue(0);
 
         mResetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +93,7 @@ public class ExerciseOneFragment extends Fragment {
                 mTextViewInfo.setText(R.string.start_ex);
                 updateCountdownText();
                 mResetBtn.setVisibility(View.GONE);
+                mPicker.setValue(0);
             }
         });
 
@@ -98,7 +104,7 @@ public class ExerciseOneFragment extends Fragment {
             }
         });
 
-        mTextViewCountdown.setOnClickListener(new View.OnClickListener() {
+        mCountdownWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 youtubeFragment.pauseVid();
@@ -162,12 +168,7 @@ public class ExerciseOneFragment extends Fragment {
     }
 
     private void checkAndUpdateResult() {
-        String input = resultInput.getText().toString();
-        if (input.length() == 0 || input == null) {
-            resultInput.setError("Please enter a number.");
-            return;
-        }
-        callback.updateFirebaseProfiling("/testPushups", input);
+        callback.updateFirebaseProfiling(getString(R.string.firebase_key_pushups), String.valueOf(mPicker.getValue()));
         navController.navigate(R.id.action_exerciseOneFragment_to_exerciseTwoFragment);
     }
 }

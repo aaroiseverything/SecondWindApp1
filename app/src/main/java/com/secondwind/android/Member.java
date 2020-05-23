@@ -1,7 +1,5 @@
 package com.secondwind.android;
 
-import android.net.Uri;
-
 public class Member {
     private String Username, Email, GoogleId, LoginType, PhotoUrl;
 

@@ -33,6 +33,7 @@
                 android:text="@string/ex_2_title"
                 android:textSize="@dimen/title_size"
                 android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
                 tools:ignore="SpUsage" />
 
             <TextView
@@ -40,6 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="@string/ex_2_description" />
 
             <RelativeLayout
@@ -47,9 +50,12 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/chronometerWrapper"
+                    android:layout_width="135dp"
+                    android:layout_height="135dp"
                     android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:background="@drawable/btn_circle"
                     android:orientation="vertical">
 
                     <Chronometer
@@ -57,30 +63,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:textColor="#ffffff"
                         android:text=""
                         android:textSize="30sp" />
 
                     <TextView
-                        android:id="@+id/startOrPauseTwo"
+                        android:id="@+id/startBtnInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="#ffffff"
                         android:gravity="center"
                         android:text="@string/start_ex" />
 
                 </LinearLayout>
 
                 <ProgressBar
-                    android:id="@+id/progressTwo"
+                    android:id="@+id/progressBar"
                     style="?android:progressBarStyleHorizontal"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
+                    android:layout_width="190dp"
+                    android:layout_height="190dp"
                     android:layout_centerInParent="true"
                     android:progress="100"
                     android:progressDrawable="@drawable/progress_circle" />
             </RelativeLayout>
 
             <Button
-                android:id="@+id/resetBtnTwo"
+                android:id="@+id/resetBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
@@ -94,7 +102,7 @@
 
 
             <Button
-                android:id="@+id/nextExBtnTwo"
+                android:id="@+id/nextExBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"

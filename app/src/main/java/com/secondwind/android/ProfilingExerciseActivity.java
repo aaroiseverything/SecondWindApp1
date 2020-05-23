@@ -23,14 +23,14 @@ public class ProfilingExerciseActivity extends AppCompatActivity implements Exer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profiling_exercise);
 
-        sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
-        rref = FirebaseDatabase.getInstance().getReference().child("Members");
-        firebaseKey = sharedPreferences.getString("firebaseKey", "");
+        sharedPreferences = getSharedPreferences(getString(R.string.shared_prefs_name), Context.MODE_PRIVATE);
+        rref = FirebaseDatabase.getInstance().getReference().child(getString(R.string.firebase_db_members));
+        firebaseKey = sharedPreferences.getString(getString(R.string.shared_prefs_key_firebasekey), "");
     }
 
     public void updateFirebaseProfiling(String field, String input) {
         Map<String, Object> userUpdates = new HashMap<>();
-        userUpdates.put(firebaseKey + "/profilingExercises" + field, input);
+        userUpdates.put(firebaseKey + getString(R.string.firebase_key_profiling_exercises) + field, input);
         rref.updateChildren(userUpdates);
     }
 
