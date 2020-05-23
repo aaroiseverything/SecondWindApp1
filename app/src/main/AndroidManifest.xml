@@ -18,6 +18,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ProfilingExerciseActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".HomeActivity"
