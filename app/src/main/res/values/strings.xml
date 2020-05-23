@@ -22,6 +22,9 @@
 
     <string name="forgot_password">Forgot your password?</string>
 
+    <string name="shared_prefs_key_loggedin_bool">loggedIn</string>
+    <string name="loggedin_true">true</string>
+
     <!--home-->
     <string name="first_workout">Complete 5 exercises to get customised workout</string>
     <string name="update_profile">Update Profile</string>
@@ -88,6 +91,6 @@
     <string name="firebase_key_profiling_exercises">/profilingExercises</string>
     <string name="firebase_key_planks">/testPlanks</string>
     <string name="firebase_key_pushups">/testPushups</string>
-
+    <string name="loggedin_false">false</string>
 
 </resources>

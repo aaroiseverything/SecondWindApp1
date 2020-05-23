@@ -54,12 +54,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     Member member;
 
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
     DatabaseReference rref;
 
     String firebaseKey;
+    private String loginMethod;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,19 +88,35 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+
+        loginMethod = sharedPreferences.getString(getString(R.string.shared_prefs_key_login_method), "");
+
         // Initialise Logout btn in menu
         navigationView.getMenu().findItem(R.id.logout).setOnMenuItemClickListener(menuItem -> {
-            Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
-                    new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(Status status) {
-                            if (status.isSuccess()) {
-                                gotoMainActivity();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Session not close", Toast.LENGTH_LONG).show();
+
+
+            if (loginMethod.equals(getString(R.string.login_type_auth))) {
+                FirebaseAuth.getInstance().signOut();
+                editor.putString(getString(R.string.shared_prefs_key_loggedin_bool), getString(R.string.loggedin_false));
+                editor.apply();
+                finish();
+                gotoMainActivity();
+            } else if (loginMethod.equals(getString(R.string.login_type_google))) {
+                Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                if (status.isSuccess()) {
+                                    editor.putString(getString(R.string.shared_prefs_key_loggedin_bool), getString(R.string.loggedin_false));
+                                    editor.apply();
+                                    finish();
+                                    gotoMainActivity();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Session not close", Toast.LENGTH_LONG).show();
+                                }
                             }
-                        }
-                    });
+                        });
+            }
             return true;
         });
 
@@ -132,8 +149,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
-        String loginMethod = sharedPreferences.getString(getString(R.string.shared_prefs_key_login_method), "");
-
         switch (loginMethod) {
             case "google":
                 OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);

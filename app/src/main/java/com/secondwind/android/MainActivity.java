@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
+    private String loggedIn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +44,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         sharedPreferences = getSharedPreferences(getString(R.string.shared_prefs_name), MODE_PRIVATE);
         editor = sharedPreferences.edit();
-
-        resetPreferences();
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -74,15 +75,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 userLogin();
             }
         });
-    }
-
-    private void resetPreferences() {
-        editor.putString(getString(R.string.shared_prefs_key_login_method), "");
-        editor.putString(getString(R.string.shared_prefs_key_email), "");
-        editor.putString(getString(R.string.shared_prefs_key_username), "");
-        editor.putString(getString(R.string.shared_prefs_key_google_id), "");
-        editor.putString(getString(R.string.shared_prefs_key_user_photo_url), "");
-        editor.apply();
     }
 
     private void userLogin() {
@@ -134,8 +126,24 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loggedIn = sharedPreferences.getString(getString(R.string.shared_prefs_key_loggedin_bool), "");
+        Log.d("test", loggedIn);
+        if (loggedIn.equals("true")) {
+            Log.d("test", "oi");
+            finish();
+            startActivity(new Intent(this, HomeActivity.class));
+        }
+    }
+
     private void gotoHome() {
+        editor.putString(getString(R.string.shared_prefs_key_loggedin_bool), getString(R.string.loggedin_true));
+        editor.apply();
+        finish();
         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
@@ -145,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     public void goToSignUp(View v) {
+        finish();
         Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
         startActivity(intent);
     }
