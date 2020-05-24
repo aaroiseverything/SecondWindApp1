@@ -23,7 +23,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="151dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="-10dp"
         android:layout_marginRight="15dp"
@@ -57,6 +57,80 @@
                 android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="20dp" />
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="447dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="How many times do you workout a week?" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:max="15"
+            android:progress="3"
+            android:progressTint="#03A9F4" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="What are your goals? Pick top 3 goals." />
+
+        <RadioButton
+            android:id="@+id/radioButton1"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Burn Fat" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Improve Endurance" />
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Build Muscle" />
+
+        <RadioButton
+            android:id="@+id/radioButton4"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Improve Fitness" />
+
+        <RadioButton
+            android:id="@+id/radioButton5"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Relieve Stress" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="140dp"
+            android:layout_height="59dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:background="#000000"
+            android:drawablePadding="20dp"
+            android:text="Save"
+            android:textColor="#FFFFFF"
+            android:textColorLink="#FAFAFA" />
     </LinearLayout>
 
 </LinearLayout>

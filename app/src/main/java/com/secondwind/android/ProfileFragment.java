@@ -9,7 +9,11 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,12 +39,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
     TextView userNameView, userEmailView;
     ImageView profileImage;
-
+    SeekBar seekBar;
+    RadioButton radioButton1, radioButton2, radioButton3, radioButton4, radioButton5;
+    Button saveButton;
     private FirebaseAuth mAuth;
 
     private static final int CHOOSE_IMAGE = 101;
@@ -48,6 +56,8 @@ public class ProfileFragment extends Fragment {
     String profileImageUrl;
     String loginMethod;
     String userEmail;
+    //Update profile variables
+    List <String> goals;
 
     DatabaseReference rref;
 
@@ -77,8 +87,33 @@ public class ProfileFragment extends Fragment {
 
         userNameView.setText(sharedPreferences.getString(getString(R.string.shared_prefs_key_username), ""));
         userEmailView.setText(userEmail);
-
-//        profileImage.setOnClickListener(new View.OnClickListener() {
+        //Initalise List of Goals
+        goals = new ArrayList<>();
+        //Radio Buttons
+        radioButton1 = (RadioButton) view.findViewById(R.id.radioButton1);
+        radioButton2 = (RadioButton) view.findViewById(R.id.radioButton2);
+        radioButton3 = (RadioButton) view.findViewById(R.id.radioButton3);
+        radioButton4 = (RadioButton) view.findViewById(R.id.radioButton4);
+        radioButton5 = (RadioButton) view.findViewById(R.id.radioButton5);
+        saveButton = (Button) view.findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String r1 = radioButton1.getText().toString();
+                String r2 = radioButton2.getText().toString();
+                String r3 = radioButton3.getText().toString();
+                String r4 = radioButton4.getText().toString();
+                String r5 = radioButton5.getText().toString();
+                if (radioButton1.isChecked()){ goals.add(r1);}
+                if (radioButton2.isChecked()){ goals.add(r2);}
+                if (radioButton3.isChecked()){ goals.add(r3);}
+                if (radioButton4.isChecked()){ goals.add(r4);}
+                if (radioButton5.isChecked()){ goals.add(r5);}
+                member.setGoals(goals);
+                rref.child("Member").setValue(member);  //failed to push to firebase
+            }
+        });
+        //        profileImage.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                if (sharedPreferences.getString("loginMethod", "") == "auth") {
@@ -191,4 +226,6 @@ public class ProfileFragment extends Fragment {
 //        intent.setAction(Intent.ACTION_GET_CONTENT);
 //        startActivityForResult(Intent.createChooser(intent, "Select profile image"), CHOOSE_IMAGE);
 //    }
+
 }
+
