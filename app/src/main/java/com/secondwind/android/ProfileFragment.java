@@ -113,7 +113,7 @@ public class ProfileFragment extends Fragment {
                 if (radioButton5.isChecked()){ goals.add(r5);}
                 updateFirebaseProfiling("Goals", goals);
                 goals.clear();
-                rref.child(firebaseKey).child("numWorkouts").setValue( workouts[0]);
+                rref.child(firebaseKey).child("numWorkouts").setValue( workouts[0 ]);
 
             }
         });
