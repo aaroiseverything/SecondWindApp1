@@ -316,7 +316,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void onButtonSelected() {
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, new ProfileFragment()).commit(); // idk why cannot go UpdateProfile.java
+        fragmentTransaction.replace(R.id.fragment_container, new ProfileFragment()).commit(); // idk why cannot go UpdateProfile.java but works for ProfileFragment
         //fragmentTransaction.commit();
     }
 }
