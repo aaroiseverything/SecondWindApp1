@@ -1,46 +1,30 @@
 package com.secondwind.android;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProfileFragment extends Fragment {
 
@@ -63,6 +47,8 @@ public class ProfileFragment extends Fragment {
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    String firebaseKey;
+
 
     Member member;
     View view;
@@ -73,7 +59,8 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         sharedPreferences = this.getContext().getSharedPreferences(getString(R.string.shared_prefs_name), this.getContext().MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        rref = FirebaseDatabase.getInstance().getReference().child(getString(R.string.firebase_db_members));
+        rref = FirebaseDatabase.getInstance().getReference().child("Members");
+        firebaseKey = sharedPreferences.getString(getString(R.string.shared_prefs_key_firebasekey), "");
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -95,6 +82,21 @@ public class ProfileFragment extends Fragment {
         radioButton3 = (RadioButton) view.findViewById(R.id.radioButton3);
         radioButton4 = (RadioButton) view.findViewById(R.id.radioButton4);
         radioButton5 = (RadioButton) view.findViewById(R.id.radioButton5);
+        //seekBar
+        seekBar = (SeekBar) view.findViewById(R.id.seekBar);
+        final Integer[] workouts = new Integer[1];
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressChangedValue = 0;
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChangedValue = progress;
+                workouts[0] = progressChangedValue;
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) { }
+        });
+        //saveButton
         saveButton = (Button) view.findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,10 +111,14 @@ public class ProfileFragment extends Fragment {
                 if (radioButton3.isChecked()){ goals.add(r3);}
                 if (radioButton4.isChecked()){ goals.add(r4);}
                 if (radioButton5.isChecked()){ goals.add(r5);}
-                member.setGoals(goals);
-                rref.child("Member").setValue(member);  //failed to push to firebase
+                updateFirebaseProfiling("Goals", goals);
+                goals.clear();
+                rref.child(firebaseKey).child("numWorkouts").setValue( workouts[0]);
+
             }
         });
+
+
         //        profileImage.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -226,6 +232,11 @@ public class ProfileFragment extends Fragment {
 //        intent.setAction(Intent.ACTION_GET_CONTENT);
 //        startActivityForResult(Intent.createChooser(intent, "Select profile image"), CHOOSE_IMAGE);
 //    }
+    public void updateFirebaseProfiling(String field, List<String> input) {
+        Map<String, Object> userUpdates = new HashMap<>();
+        userUpdates.put(firebaseKey + "/"+field, input);
+        rref.updateChildren(userUpdates);
+    }
 
 }
 
