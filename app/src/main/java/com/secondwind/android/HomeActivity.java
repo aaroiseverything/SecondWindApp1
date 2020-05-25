@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.onFragmentBtnSelected, GoogleApiClient.OnConnectionFailedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.EditProfileBtnAddListener, GoogleApiClient.OnConnectionFailedListener {
 
     private DrawerLayout drawer;
     private GoogleApiClient googleApiClient;
@@ -55,28 +56,57 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     Member member;
 
     private SharedPreferences sharedPreferences;
+    private NavigationView navigationView;
     SharedPreferences.Editor editor;
 
     DatabaseReference rref;
 
     String firebaseKey;
     private String loginMethod;
+    private boolean savedInstanceStatePresent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // Initialise menu
+        navigationView = findViewById(R.id.nav_view);
         sharedPreferences = getSharedPreferences(getString(R.string.shared_prefs_name), MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+        loginMethod = sharedPreferences.getString(getString(R.string.shared_prefs_key_login_method), "");
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new HomeFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+
+        // prevent reload during rotation
+        if (savedInstanceState != null) {
+            savedInstanceStatePresent = true;
+            return;
+        }
+        savedInstanceStatePresent = false;
+
+        // initialise other variables
+        editor = sharedPreferences.edit();
         firebaseKey = sharedPreferences.getString(getString(R.string.shared_prefs_key_firebasekey), "");
 
         // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
         rref = FirebaseDatabase.getInstance().getReference().child(getString(R.string.firebase_db_members));
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
 
         // Initialise google variables
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -88,13 +118,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-
-        loginMethod = sharedPreferences.getString(getString(R.string.shared_prefs_key_login_method), "");
-
         // Initialise Logout btn in menu
         navigationView.getMenu().findItem(R.id.logout).setOnMenuItemClickListener(menuItem -> {
-
-
             if (loginMethod.equals(getString(R.string.login_type_auth))) {
                 FirebaseAuth.getInstance().signOut();
                 editor.putString(getString(R.string.shared_prefs_key_loggedin_bool), getString(R.string.loggedin_false));
@@ -120,24 +145,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             return true;
         });
 
-        // Initialise menu
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        drawer = findViewById(R.id.drawer_layout);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_home);
-        }
 
         //Initialize Fragment  21MayAaron
         fragmentManager = getSupportFragmentManager();
@@ -149,6 +157,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
+
+        if (savedInstanceStatePresent) {
+            return;
+        }
+
         switch (loginMethod) {
             case "google":
                 OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
@@ -313,10 +326,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     //21May Aaron
     @Override
-    public void onButtonSelected() {
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, new ProfileFragment()).commit(); // idk why cannot go UpdateProfile.java but works for ProfileFragment
-        //fragmentTransaction.commit();
+    public void onEditProfileBtnSelected() {
+        Menu menu = navigationView.getMenu();
+        MenuItem menuItem = menu.findItem(R.id.nav_profile);
+        navigationView.setCheckedItem(R.id.nav_profile);
+        onNavigationItemSelected(menuItem);
     }
 }

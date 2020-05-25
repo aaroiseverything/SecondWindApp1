@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -17,6 +18,15 @@ public class ProfilingExerciseActivity extends AppCompatActivity implements Exer
     SharedPreferences sharedPreferences;
     DatabaseReference rref;
     String firebaseKey;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
