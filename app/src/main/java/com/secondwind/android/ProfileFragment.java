@@ -119,7 +119,7 @@ public class ProfileFragment extends Fragment {
         });
 
 
-        //        profileImage.setOnClickListener(new View.OnClickListener() {
+        //    profileImage.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                if (sharedPreferences.getString("loginMethod", "") == "auth") {
