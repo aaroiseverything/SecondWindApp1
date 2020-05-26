@@ -1,5 +1,6 @@
 package com.secondwind.android;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,37 +22,29 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class ProfileFragment extends Fragment {
 
-    TextView userNameView, userEmailView;
-    ImageView profileImage;
-    SeekBar seekBar;
-    RadioButton radioButton1, radioButton2, radioButton3, radioButton4, radioButton5;
-    Button saveButton;
+    private TextView userNameView, userEmailView;
+    private ImageView profileImage;
     private FirebaseAuth mAuth;
+
+    private Button editProfileBtn;
 
     private static final int CHOOSE_IMAGE = 101;
     Uri uriProfileImage;
     String profileImageUrl;
     String loginMethod;
-    String userEmail;
-    //Update profile variables
-    List <String> goals;
+    private String userEmail;
 
-    DatabaseReference rref;
+    private DatabaseReference rref;
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-    String firebaseKey;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private String firebaseKey;
 
 
-    Member member;
-    View view;
+    private Member member;
+    private View view;
 
     @Nullable
     @Override
@@ -68,56 +61,21 @@ public class ProfileFragment extends Fragment {
         userNameView = (TextView) view.findViewById(R.id.name);
         userEmailView = (TextView) view.findViewById(R.id.email);
         profileImage = (ImageView) view.findViewById(R.id.profileImage);
+        editProfileBtn = view.findViewById(R.id.editProfileBtn);
 
         userEmail = sharedPreferences.getString(getString(R.string.shared_prefs_key_email), "");
         loginMethod = sharedPreferences.getString(getString(R.string.shared_prefs_key_login_method), "");
 
         userNameView.setText(sharedPreferences.getString(getString(R.string.shared_prefs_key_username), ""));
         userEmailView.setText(userEmail);
-        //Initalise List of Goals
-        goals = new ArrayList<>();
-        //Radio Buttons
-        radioButton1 = (RadioButton) view.findViewById(R.id.radioButton1);
-        radioButton2 = (RadioButton) view.findViewById(R.id.radioButton2);
-        radioButton3 = (RadioButton) view.findViewById(R.id.radioButton3);
-        radioButton4 = (RadioButton) view.findViewById(R.id.radioButton4);
-        radioButton5 = (RadioButton) view.findViewById(R.id.radioButton5);
-        //seekBar
-        seekBar = (SeekBar) view.findViewById(R.id.seekBar);
-        final Integer[] workouts = new Integer[1];
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progressChangedValue = 0;
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progressChangedValue = progress;
-                workouts[0] = progressChangedValue;
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { }
-        });
-        //saveButton
-        saveButton = (Button) view.findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
+
+        editProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String r1 = radioButton1.getText().toString();
-                String r2 = radioButton2.getText().toString();
-                String r3 = radioButton3.getText().toString();
-                String r4 = radioButton4.getText().toString();
-                String r5 = radioButton5.getText().toString();
-                if (radioButton1.isChecked()){ goals.add(r1);}
-                if (radioButton2.isChecked()){ goals.add(r2);}
-                if (radioButton3.isChecked()){ goals.add(r3);}
-                if (radioButton4.isChecked()){ goals.add(r4);}
-                if (radioButton5.isChecked()){ goals.add(r5);}
-                updateFirebaseProfiling("Goals", goals);
-                goals.clear();
-                rref.child(firebaseKey).child("numWorkouts").setValue( workouts[0 ]);
-
+                Intent intent = new Intent(getActivity(), UpdateProfileActivity.class);
+                startActivity(intent);
             }
         });
-
 
         //    profileImage.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -226,17 +184,13 @@ public class ProfileFragment extends Fragment {
 //        }
 //    }
 
-//    public void showImageChooser() {
+    //    public void showImageChooser() {
 //        Intent intent = new Intent();
 //        intent.setType("image/*");
 //        intent.setAction(Intent.ACTION_GET_CONTENT);
 //        startActivityForResult(Intent.createChooser(intent, "Select profile image"), CHOOSE_IMAGE);
 //    }
-    public void updateFirebaseProfiling(String field, List<String> input) {
-        Map<String, Object> userUpdates = new HashMap<>();
-        userUpdates.put(firebaseKey + "/"+field, input);
-        rref.updateChildren(userUpdates);
-    }
+
 
 }
 

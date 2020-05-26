@@ -130,9 +130,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onStart() {
         super.onStart();
         loggedIn = sharedPreferences.getString(getString(R.string.shared_prefs_key_loggedin_bool), "");
-        Log.d("test", loggedIn);
         if (loggedIn.equals("true")) {
-            Log.d("test", "oi");
             finish();
             startActivity(new Intent(this, HomeActivity.class));
         }
