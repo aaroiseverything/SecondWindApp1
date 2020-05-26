@@ -3,6 +3,15 @@ package com.secondwind.android;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,23 +21,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.os.CountDownTimer;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.NumberPicker;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
 import java.util.Locale;
-// This is the 1st fragment for Assessment
-public class ExerciseOneFragment extends Fragment {
+// This is the 1st fragment for Generate next workout
+public class GenerateExerciseOneFragment extends Fragment {
 
 
-    private ExerciseTwoFragment.ProfilingExerciseAddListener callback;
+    private GenerateExerciseTwoFragment.GenerateExerciseAddListener callback;
 
     private static final long START_TIME_IN_MILLIS = 60000;
 
@@ -48,7 +46,7 @@ public class ExerciseOneFragment extends Fragment {
     private LinearLayout mCountdownWrapper;
     private NumberPicker mPicker;
 
-    public ExerciseOneFragment() {
+    public GenerateExerciseOneFragment() {
         // Required empty public constructor
     }
 
@@ -67,7 +65,7 @@ public class ExerciseOneFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exercise_one, container, false);
+        return inflater.inflate(R.layout.fragment_generate_one, container, false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -166,11 +164,11 @@ public class ExerciseOneFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        callback = (ExerciseTwoFragment.ProfilingExerciseAddListener) activity;
+        callback = (GenerateExerciseTwoFragment.GenerateExerciseAddListener) activity;
     }
-
+    // This updates Firebase on number of pushups.
     private void checkAndUpdateResult() {
         callback.updateFirebaseProfiling(getString(R.string.firebase_key_pushups), String.valueOf(mPicker.getValue()));
-        navController.navigate(R.id.action_exerciseOneFragment_to_exerciseTwoFragment);
+        navController.navigate(R.id.action_generateExerciseOneFragment_to_generateExerciseTwoFragment);
     }
 }

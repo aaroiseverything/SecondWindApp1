@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profiling_exercises"
+    app:startDestination="@id/generateExerciseOneFragment">
+
+    <fragment
+        android:id="@+id/generateExerciseOneFragment"
+        android:name="com.secondwind.android.GenerateExerciseOneFragment"
+        android:label="GenerateExerciseOneFragment"
+        tools:layout="@layout/fragment_generate_one">
+        <action
+            android:id="@+id/action_generateExerciseOneFragment_to_generateExerciseTwoFragment"
+            app:destination="@id/generateExerciseTwoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/generateExerciseTwoFragment"
+        android:name="com.secondwind.android.GenerateExerciseTwoFragment"
+        android:label="GenerateExerciseTwoFragment"
+        tools:layout="@layout/fragment_generate_two" />
+</navigation>

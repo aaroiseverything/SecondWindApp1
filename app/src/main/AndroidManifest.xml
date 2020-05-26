@@ -20,6 +20,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:parentActivityName=".HomeActivity" />
         <activity
+            android:name=".GenerateExerciseActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:parentActivityName=".HomeActivity" />
+        <activity
             android:name=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

@@ -18,6 +18,7 @@ public class HomeFragment extends Fragment {
     private onFragmentBtnSelected listener;
     private RelativeLayout exerciseButton;
     private RelativeLayout updateProfile;
+    private RelativeLayout generateWorkoutButton;
     View view;
 
     @Nullable
@@ -28,6 +29,7 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         updateProfile = view.findViewById(R.id.updateProfileButton);
         exerciseButton = (RelativeLayout) view.findViewById(R.id.exerciseButton);
+        generateWorkoutButton = (RelativeLayout) view.findViewById(R.id.generateWorkoutButton);
         exerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,6 +42,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 listener.onButtonSelected();
+            }
+        });
+        generateWorkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GenerateExerciseActivity.class);
+                startActivity(intent);
             }
         });
         return view;
