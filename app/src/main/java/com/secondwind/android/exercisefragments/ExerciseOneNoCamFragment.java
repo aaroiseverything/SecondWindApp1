@@ -1,25 +1,31 @@
 package com.secondwind.android.exercisefragments;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.os.CountDownTimer;
+import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.secondwind.android.R;
 
@@ -34,7 +40,7 @@ public class ExerciseOneNoCamFragment extends Fragment {
     private static final long START_TIME_IN_MILLIS = 60000;
     private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
     private LinearLayout mCountdownWrapper;
-    private NumberPicker mPicker;
+    //    private NumberPicker mPicker;
     private boolean finished;
     private long startTimeInSeconds;
     private TextView mTextViewCountdown;
@@ -43,6 +49,7 @@ public class ExerciseOneNoCamFragment extends Fragment {
     private TextView mTextViewInfo;
     private Button mNextExBtn;
     private ExerciseTwoNoCamFragment.ProfilingExerciseAddListener callback;
+    private String mReps = "";
 
     public ExerciseOneNoCamFragment() {
         // Required empty public constructor
@@ -75,17 +82,44 @@ public class ExerciseOneNoCamFragment extends Fragment {
 
         mResetBtn = view.findViewById(R.id.resetBtn);
         mCountdownWrapper = view.findViewById(R.id.countdownWrapper);
-
-        mPicker = view.findViewById(R.id.numberPicker);
-        mPicker.setMaxValue(100);
-        mPicker.setMinValue(0);
-
         mNextExBtn = view.findViewById(R.id.nextExBtn);
 
         mNextExBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAndUpdateResult();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Reps done");
+                View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.dialog_layout, (ViewGroup) getView(), false);
+                final EditText input = (EditText) viewInflated.findViewById(R.id.input);
+                builder.setView(viewInflated);
+
+
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mReps = input.getText().toString();
+                        if (mReps.length() <= 0) {
+                            input.setError("Please enter a number");
+                        } else {
+                            checkAndUpdateResult();
+                            dialog.dismiss();
+                        }
+                    }
+                });
             }
         });
 
@@ -99,7 +133,6 @@ public class ExerciseOneNoCamFragment extends Fragment {
                 mTextViewInfo.setText(R.string.start_ex);
                 updateCountdownText();
                 mResetBtn.setVisibility(View.GONE);
-                mPicker.setValue(0);
             }
         });
 
@@ -166,7 +199,7 @@ public class ExerciseOneNoCamFragment extends Fragment {
     }
 
     private void checkAndUpdateResult() {
-        callback.updateFirebaseProfiling(getString(R.string.firebase_key_pushups), String.valueOf(mPicker.getValue()));
+        callback.updateFirebaseProfiling(getString(R.string.firebase_key_pushups), String.valueOf(mReps));
         navController.navigate(R.id.action_exerciseOneNoCamFragment_to_exerciseTwoFragment);
     }
 }

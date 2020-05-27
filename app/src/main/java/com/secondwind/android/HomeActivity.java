@@ -87,15 +87,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        // initialise other variables
+        editor = sharedPreferences.edit();
+        firebaseKey = sharedPreferences.getString(getString(R.string.shared_prefs_key_firebasekey), "");
+
         // prevent reload during rotation
         if (savedInstanceState != null) {
             savedInstanceStatePresent = true;
             return;
         }
-
-        // initialise other variables
-        editor = sharedPreferences.edit();
-        firebaseKey = sharedPreferences.getString(getString(R.string.shared_prefs_key_firebasekey), "");
 
         // default to Home when started
         Integer landingPointer = sharedPreferences.getInt(getString(R.string.landing_pointer), R.id.nav_home);

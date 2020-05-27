@@ -1,5 +1,6 @@
 package com.secondwind.android.exercisefragments;
 
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -31,6 +32,19 @@ public class ExerciseTwoFragment extends Fragment {
 
     public ExerciseTwoFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            youtubeFragment.setFullScreen(false);
+        }
+        else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            youtubeFragment.setFullScreen(true);
+        }
     }
 
 

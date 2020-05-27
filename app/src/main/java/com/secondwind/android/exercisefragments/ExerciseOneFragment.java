@@ -1,5 +1,8 @@
 package com.secondwind.android.exercisefragments;
 
+import android.app.Activity;
+import android.content.res.Configuration;
+import android.media.VolumeShaper;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -11,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +33,15 @@ public class ExerciseOneFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            youtubeFragment.setFullScreen(false);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            youtubeFragment.setFullScreen(true);
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +62,7 @@ public class ExerciseOneFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         navController = Navigation.findNavController(view);
         mNextExBtn = view.findViewById(R.id.nextExBtn);
 

@@ -59,7 +59,6 @@ public class YoutubeFragment extends Fragment {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider arg0, YouTubePlayer youTubePlayer, boolean b) {
                 if (!b) {
-//                    youTubePlayer.setFullscreen(true);
                     mYouTubePlayer = youTubePlayer;
                     youTubePlayer.loadVideo(videoId);
                     youTubePlayer.play();
@@ -74,6 +73,10 @@ public class YoutubeFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    public void setFullScreen(Boolean fullScreen) {
+        mYouTubePlayer.setFullscreen(fullScreen);
     }
 
     public void pauseVid() {

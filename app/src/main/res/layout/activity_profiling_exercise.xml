@@ -7,17 +7,13 @@
     android:orientation="vertical"
     tools:context=".ProfilingExerciseActivity">
 
-    <ScrollView
+    <fragment
+        android:id="@+id/fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <fragment
-            android:id="@+id/fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/profiling_exercises" />
-    </ScrollView>
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        android:fillViewport="true"
+        app:navGraph="@navigation/profiling_exercises" />
 
 </LinearLayout>
