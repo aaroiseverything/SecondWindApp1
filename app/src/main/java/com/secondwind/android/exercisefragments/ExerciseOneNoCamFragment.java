@@ -1,4 +1,4 @@
-package com.secondwind.android;
+package com.secondwind.android.exercisefragments;
 
 import android.app.Activity;
 import android.os.Build;
@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -16,39 +15,36 @@ import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.secondwind.android.R;
+
 import java.util.Locale;
 
-public class ExerciseOneFragment extends Fragment {
 
+public class ExerciseOneNoCamFragment extends Fragment {
 
-    private ExerciseTwoFragment.ProfilingExerciseAddListener callback;
-
+    private NavController navController;
+    private Button mResetBtn;
+    private boolean mTimerRunning;
     private static final long START_TIME_IN_MILLIS = 60000;
-
-    NavController navController;
-
-    private Button mNextExBtn;
+    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
+    private LinearLayout mCountdownWrapper;
+    private NumberPicker mPicker;
     private boolean finished;
     private long startTimeInSeconds;
     private TextView mTextViewCountdown;
     private CountDownTimer mCountDownTimer;
     private ProgressBar mProgressBar;
-    private YoutubeFragment youtubeFragment;
     private TextView mTextViewInfo;
-    private Button mResetBtn;
-    private boolean mTimerRunning;
-    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
-    private LinearLayout mCountdownWrapper;
-    private NumberPicker mPicker;
+    private Button mNextExBtn;
+    private ExerciseTwoNoCamFragment.ProfilingExerciseAddListener callback;
 
-    public ExerciseOneFragment() {
+    public ExerciseOneNoCamFragment() {
         // Required empty public constructor
     }
 
@@ -56,18 +52,15 @@ public class ExerciseOneFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         startTimeInSeconds = (int) START_TIME_IN_MILLIS / 1000;
-        youtubeFragment = YoutubeFragment.newInstance(getString(R.string.youtube_one_id));
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(R.id.flYoutube, youtubeFragment).commit();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exercise_one, container, false);
+        return inflater.inflate(R.layout.fragment_exercise_one_no_cam, container, false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -75,10 +68,11 @@ public class ExerciseOneFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        mNextExBtn = view.findViewById(R.id.nextExBtn);
         mTextViewCountdown = view.findViewById(R.id.countdown);
         mProgressBar = view.findViewById(R.id.progressBar);
         mTextViewInfo = view.findViewById(R.id.startBtnInfo);
+        mNextExBtn = view.findViewById(R.id.nextExBtn);
+
         mResetBtn = view.findViewById(R.id.resetBtn);
         mCountdownWrapper = view.findViewById(R.id.countdownWrapper);
 
@@ -86,7 +80,18 @@ public class ExerciseOneFragment extends Fragment {
         mPicker.setMaxValue(100);
         mPicker.setMinValue(0);
 
+        mNextExBtn = view.findViewById(R.id.nextExBtn);
+
+        mNextExBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkAndUpdateResult();
+            }
+        });
+
+
         mResetBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 mTimeLeftInMillis = START_TIME_IN_MILLIS;
@@ -98,17 +103,9 @@ public class ExerciseOneFragment extends Fragment {
             }
         });
 
-        mNextExBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkAndUpdateResult();
-            }
-        });
-
         mCountdownWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                youtubeFragment.pauseVid();
                 if (mTimerRunning) {
                     mTextViewInfo.setText(R.string.continue_ex);
                     pauseTimer();
@@ -122,7 +119,6 @@ public class ExerciseOneFragment extends Fragment {
         });
 
         updateCountdownText();
-
     }
 
     private void startTimer() {
@@ -166,11 +162,11 @@ public class ExerciseOneFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        callback = (ExerciseTwoFragment.ProfilingExerciseAddListener) activity;
+        callback = (ExerciseTwoNoCamFragment.ProfilingExerciseAddListener) activity;
     }
 
     private void checkAndUpdateResult() {
         callback.updateFirebaseProfiling(getString(R.string.firebase_key_pushups), String.valueOf(mPicker.getValue()));
-        navController.navigate(R.id.action_exerciseOneFragment_to_exerciseTwoFragment);
+        navController.navigate(R.id.action_exerciseOneNoCamFragment_to_exerciseTwoFragment);
     }
 }

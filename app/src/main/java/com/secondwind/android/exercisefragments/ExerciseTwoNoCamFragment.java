@@ -1,4 +1,4 @@
-package com.secondwind.android;
+package com.secondwind.android.exercisefragments;
 
 import android.app.Activity;
 import android.os.Build;
@@ -8,9 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import android.os.SystemClock;
 import android.view.LayoutInflater;
@@ -21,20 +18,20 @@ import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.secondwind.android.R;
+
 import java.util.Locale;
 
-public class ExerciseTwoFragment extends Fragment {
+
+public class ExerciseTwoNoCamFragment extends Fragment {
 
     private static final long END_TIME_IN_MILLIS = 120000;
-    private ProfilingExerciseAddListener callback;
-
-    NavController navController;
+    private ExerciseTwoNoCamFragment.ProfilingExerciseAddListener callback;
     private Button mNextExBtn;
     String firebaseKey;
-
     private boolean finished;
     private ProgressBar mProgressBar;
-    private YoutubeFragment youtubeFragment;
     private TextView mTextViewInfo;
     private Button mResetBtn;
     private boolean mTimerRunning;
@@ -42,42 +39,38 @@ public class ExerciseTwoFragment extends Fragment {
     private long pauseOffset = 0;
     private LinearLayout mChronometerWrapper;
 
-
-    public ExerciseTwoFragment() {
+    public ExerciseTwoNoCamFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        callback = (ProfilingExerciseAddListener) activity;
+        callback = (ExerciseTwoNoCamFragment.ProfilingExerciseAddListener) activity;
     }
-
     public interface ProfilingExerciseAddListener {
         void onProfilingEnd();
         void updateFirebaseProfiling(String s, String input);
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        youtubeFragment = YoutubeFragment.newInstance(getString(R.string.youtube_two_id));
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(R.id.flYoutube, youtubeFragment).commit();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exercise_two, container, false);
+        return inflater.inflate(R.layout.fragment_exercise_two_no_cam, container, false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
         mChronometer = view.findViewById(R.id.chronometer);
         mProgressBar = view.findViewById(R.id.progressBar);
         mTextViewInfo = view.findViewById(R.id.startBtnInfo);
@@ -103,7 +96,6 @@ public class ExerciseTwoFragment extends Fragment {
         mChronometerWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                youtubeFragment.pauseVid();
                 if (mTimerRunning) {
                     mTextViewInfo.setText(R.string.continue_ex);
                     pauseChronometer();
@@ -144,6 +136,18 @@ public class ExerciseTwoFragment extends Fragment {
         updateProgressbar();
     }
 
+
+    private void updateProgressbar() {
+        Integer progress = (int) ((double) (pauseOffset) / ((double) END_TIME_IN_MILLIS) * 100);
+        mProgressBar.setProgress(progress);
+    }
+
+    private void checkAndUpdateResult() {
+        String input = String.valueOf((int) pauseOffset / 1000);
+        callback.updateFirebaseProfiling(getString(R.string.firebase_key_planks), input);
+        callback.onProfilingEnd();
+    }
+
     public void startChronometer() {
         if (!mTimerRunning) {
             mChronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
@@ -169,14 +173,4 @@ public class ExerciseTwoFragment extends Fragment {
         finished = false;
     }
 
-    private void updateProgressbar() {
-        Integer progress = (int) ((double) (pauseOffset) / ((double) END_TIME_IN_MILLIS) * 100);
-        mProgressBar.setProgress(progress);
-    }
-
-    private void checkAndUpdateResult() {
-        String input = String.valueOf((int) pauseOffset / 1000);
-        callback.updateFirebaseProfiling(getString(R.string.firebase_key_planks), input);
-        callback.onProfilingEnd();
-    }
 }

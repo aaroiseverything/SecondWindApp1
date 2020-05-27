@@ -13,7 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -32,10 +32,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.secondwind.android.classes.Member;
+import com.secondwind.android.classes.Preferences;
+import com.secondwind.android.signupactivities.MainActivity;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.EditProfileBtnAddListener, GoogleApiClient.OnConnectionFailedListener {
@@ -44,23 +50,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions gso;
     private FirebaseAuth mAuth;
-
     String userName;
     String userEmail;
     String userGoogleId;
     Uri userPhotoUrl;
-    //21MayAaron
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-
     Member member;
-
     private SharedPreferences sharedPreferences;
     private NavigationView navigationView;
     SharedPreferences.Editor editor;
-
     DatabaseReference rref;
-
     String firebaseKey;
     private String loginMethod;
     private boolean savedInstanceStatePresent;
@@ -87,22 +87,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_home);
-        }
-
         // prevent reload during rotation
         if (savedInstanceState != null) {
             savedInstanceStatePresent = true;
             return;
         }
-        savedInstanceStatePresent = false;
 
         // initialise other variables
         editor = sharedPreferences.edit();
         firebaseKey = sharedPreferences.getString(getString(R.string.shared_prefs_key_firebasekey), "");
+
+        // default to Home when started
+        Integer landingPointer = sharedPreferences.getInt(getString(R.string.landing_pointer), R.id.nav_home);
+        loadFragment(landingPointer);
+        navigationView.setCheckedItem(landingPointer);
+
+        savedInstanceStatePresent = false;
 
         // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
@@ -122,6 +122,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         navigationView.getMenu().findItem(R.id.logout).setOnMenuItemClickListener(menuItem -> {
             if (loginMethod.equals(getString(R.string.login_type_auth))) {
                 FirebaseAuth.getInstance().signOut();
+                editor.clear();
                 editor.putString(getString(R.string.shared_prefs_key_loggedin_bool), getString(R.string.loggedin_false));
                 editor.apply();
                 finish();
@@ -132,6 +133,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             @Override
                             public void onResult(Status status) {
                                 if (status.isSuccess()) {
+                                    editor.clear();
                                     editor.putString(getString(R.string.shared_prefs_key_loggedin_bool), getString(R.string.loggedin_false));
                                     editor.apply();
                                     finish();
@@ -145,13 +147,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             return true;
         });
 
-
-
         //Initialize Fragment  21MayAaron
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, new HomeFragment());
-        fragmentTransaction.commit();
+//        fragmentManager = getSupportFragmentManager();
+//        fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.add(R.id.fragment_container, new HomeFragment());
+//        fragmentTransaction.commit();
     }
 
     @Override
@@ -183,12 +183,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
+    private void loadFragment(Integer itemId) {
+        switch (itemId) {
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new HomeFragment()).commit();
+                editor.putInt(getString(R.string.landing_pointer), R.id.nav_home);
                 break;
 //            case R.id.nav_vid:
 //                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -197,8 +197,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
+                editor.putInt(getString(R.string.landing_pointer), R.id.nav_profile);
                 break;
         }
+        editor.apply();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        Integer itemId = menuItem.getItemId();
+        loadFragment(itemId);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -210,6 +218,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+//        android.app.FragmentManager fm = getFragmentManager();
+//        if (fm.getBackStackEntryCount() > 0) {
+//            fm.popBackStack();
+//        } else {
+//            super.onBackPressed();
+//        }
     }
 
     @Override
@@ -249,7 +263,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             String key;
                             if (dataSnapshot.exists()) {
                                 key = dataSnapshot.getChildren().iterator().next().getKey();
-
+                                firebaseKey = key;
+                                getUserDetailsFromFirebase();
                             } else {
                                 // new user
                                 key = rref.push().getKey();
@@ -285,29 +300,54 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //        rref.updateChildren(userUpdates);
 //    }
 
+    private void getUserDetailsFromFirebase() {
+        Query q = rref.child(firebaseKey).child(getString(R.string.firebase_key_preferences));
+        q.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Preferences pref = dataSnapshot.getValue(Preferences.class);
+                if (pref == null) {
+                    editor.putInt(getString(R.string.shared_prefs_key_preferences_num_of_workouts), 0);
+                    editor.putStringSet(getString(R.string.shared_prefs_key_preferences_goals), new HashSet<String>());
+                    editor.apply();
+                    return;
+                }
+                editor.putInt(getString(R.string.shared_prefs_key_preferences_num_of_workouts), pref.getNumOfWorkouts());
+                Set<String> hSet = new HashSet<String>();
+                hSet.addAll(pref.getGoals());
+                editor.putStringSet(getString(R.string.shared_prefs_key_preferences_goals), hSet);
+                editor.apply();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void authSignInResult() {
 
         // user is already added to db during sign up
         userEmail = sharedPreferences.getString(getString(R.string.shared_prefs_key_email), "");
-
         rref.orderByChild(getString(R.string.firebase_key_email)).equalTo(userEmail).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                         for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+
                             member = appleSnapshot.getValue(Member.class);
                             String loginType = member.getLoginType().trim();
                             if (loginType.equals(getString(R.string.login_type_auth))) {
                                 String key = appleSnapshot.getKey();
                                 editor.putString(getString(R.string.shared_prefs_key_firebasekey), key);
-
+                                firebaseKey = key;
+                                getUserDetailsFromFirebase();
                                 userName = member.getUsername();
                                 String userPhotoUrlString = member.getPhotoUrl();
                                 editor.putString(getString(R.string.shared_prefs_key_user_photo_url), userPhotoUrlString);
                                 editor.putString(getString(R.string.shared_prefs_key_username), userName);
                                 editor.apply();
-
                             }
                         }
                     }
@@ -327,9 +367,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     //21May Aaron
     @Override
     public void onEditProfileBtnSelected() {
-        Menu menu = navigationView.getMenu();
-        MenuItem menuItem = menu.findItem(R.id.nav_profile);
-        navigationView.setCheckedItem(R.id.nav_profile);
-        onNavigationItemSelected(menuItem);
+        Intent intent = new Intent(this, UpdateProfileActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

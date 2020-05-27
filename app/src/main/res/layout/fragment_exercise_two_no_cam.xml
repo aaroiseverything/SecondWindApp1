@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:orientation="vertical"
+    tools:context=".exercisefragments.ExerciseTwoNoCamFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="@string/ex_2_title"
+        android:textSize="@dimen/title_size"
+        android:textStyle="bold"
+        tools:ignore="SpUsage" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/chronometerWrapper"
+            android:layout_width="135dp"
+            android:layout_height="135dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/btn_circle"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Chronometer
+                android:id="@+id/chronometer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text=""
+                android:textColor="#ffffff"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/startBtnInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/start_ex"
+                android:textColor="#ffffff" />
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:progressBarStyleHorizontal"
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:layout_centerInParent="true"
+            android:progress="100"
+            android:progressDrawable="@drawable/progress_circle" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/resetBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="4dp"
+        android:minHeight="45dp"
+        android:text="@string/reset"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/nextExBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_background"
+        android:minHeight="45dp"
+        android:text="@string/complete"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:visibility="gone" />
+
+</LinearLayout>

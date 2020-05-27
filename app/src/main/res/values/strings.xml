@@ -24,13 +24,15 @@
 
     <string name="shared_prefs_key_loggedin_bool">loggedIn</string>
     <string name="loggedin_true">true</string>
+    <string name="loggedin_false">false</string>
+
 
     <!--home-->
     <string name="first_workout">Complete 5 exercises to get customised workout</string>
     <string name="update_profile">Update Profile</string>
     <string name="welcome">Welcome!</string>
     <string name="welcome_description">Complete your first five exercises to receive a workout specially tailored for you</string>
-
+    <string name="landing_pointer">landing_pointer</string>
     <string name="default_profile_pic_url" tools:ignore="TypographyDashes"><![CDATA[https://firebasestorage.googleapis.com/v0/b/secondwind-android-7708e.appspot.com/o/profilepics%2Fdefault.png?alt=media&token=cb294446-ff32-4c83-9adf-e044f7663443]]></string>
 
     <!--profiling exercises-->
@@ -47,6 +49,8 @@
     <string name="continue_ex">Continue</string>
     <string name="start_ex">Start</string>
     <string name="finished">Finished</string>
+    <string name="no_goals">No goals</string>
+
 
     <!--youtube vids-->
     <string name="youtube_two_id">XxbuY3xAFgY</string>
@@ -64,6 +68,8 @@
     <string name="shared_prefs_key_email">userEmail</string>
     <string name="shared_prefs_key_google_id">userGoogleId</string>
     <string name="shared_prefs_key_user_photo_url">userPhotoUrl</string>
+    <string name="shared_prefs_key_preferences_goals">preferencesGoals</string>
+    <string name="shared_prefs_key_preferences_num_of_workouts">preferencesNumOfWorkouts</string>
 
     <!--error messages-->
     <string name="error_msg_pw_required">Password is required.</string>
@@ -91,6 +97,11 @@
     <string name="firebase_key_profiling_exercises">/profilingExercises</string>
     <string name="firebase_key_planks">/testPlanks</string>
     <string name="firebase_key_pushups">/testPushups</string>
-    <string name="loggedin_false">false</string>
+    <string name="firebase_key_preferences">/preferences</string>
+    <string name="firebase_key_preferences_num_of_workouts">/numOfWorkouts</string>
+    <string name="firebase_key_preferences_goals">/goals</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

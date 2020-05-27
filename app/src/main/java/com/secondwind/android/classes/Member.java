@@ -1,4 +1,4 @@
-package com.secondwind.android;
+package com.secondwind.android.classes;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ public class Member {
     private String GoogleId;
     private String LoginType;
     private String PhotoUrl;
-    private List<String> Goals;
 
     public Member() {
 
@@ -55,12 +54,5 @@ public class Member {
     public void setPhotoUrl(String photoUrl) {
         PhotoUrl = photoUrl;
     }
-    //failed
-    public List<String> getGoals() {
-        return Goals;
-    }
 
-    public void setGoals(List<String> goals) {
-        Goals = goals;
-    }
 }

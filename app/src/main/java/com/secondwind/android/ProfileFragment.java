@@ -3,56 +3,63 @@ package com.secondwind.android;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.secondwind.android.classes.Member;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView userNameView, userEmailView;
+    private TextView userNameView, userEmailView, workoutsText;
     private ImageView profileImage;
     private FirebaseAuth mAuth;
-
-    private Button editProfileBtn;
-
+    private TextView editProfileLink;
     private static final int CHOOSE_IMAGE = 101;
     Uri uriProfileImage;
     String profileImageUrl;
     String loginMethod;
     private String userEmail;
-
     private DatabaseReference rref;
-
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private String firebaseKey;
-
-
+    private NavController navController;
     private Member member;
     private View view;
+    private TextView goalText;
+    private ArrayList goals;
+    private Integer workouts;
 
-    @Nullable
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_profile, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        navController = Navigation.findNavController(view);
         sharedPreferences = this.getContext().getSharedPreferences(getString(R.string.shared_prefs_name), this.getContext().MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        rref = FirebaseDatabase.getInstance().getReference().child("Members");
+        rref = FirebaseDatabase.getInstance().getReference().child(getString(R.string.firebase_db_members));
         firebaseKey = sharedPreferences.getString(getString(R.string.shared_prefs_key_firebasekey), "");
 
         // Initialize Firebase Auth
@@ -61,19 +68,35 @@ public class ProfileFragment extends Fragment {
         userNameView = (TextView) view.findViewById(R.id.name);
         userEmailView = (TextView) view.findViewById(R.id.email);
         profileImage = (ImageView) view.findViewById(R.id.profileImage);
-        editProfileBtn = view.findViewById(R.id.editProfileBtn);
+        editProfileLink = view.findViewById(R.id.editProfileLink);
+        goalText = view.findViewById(R.id.goals);
+        workoutsText = view.findViewById(R.id.workoutsText);
 
         userEmail = sharedPreferences.getString(getString(R.string.shared_prefs_key_email), "");
         loginMethod = sharedPreferences.getString(getString(R.string.shared_prefs_key_login_method), "");
 
+        Set<String> goalsSet = sharedPreferences.getStringSet(getString(R.string.shared_prefs_key_preferences_goals), new HashSet<>());
+        goals = new ArrayList<>(goalsSet);
+        workouts = sharedPreferences.getInt(getString(R.string.shared_prefs_key_preferences_num_of_workouts), 0);
+
         userNameView.setText(sharedPreferences.getString(getString(R.string.shared_prefs_key_username), ""));
         userEmailView.setText(userEmail);
 
-        editProfileBtn.setOnClickListener(new View.OnClickListener() {
+        workoutsText.setText(workouts.toString());
+
+        if (goals.size() <= 0) {
+            goalText.setText(R.string.no_goals);
+        } else {
+            goalText.setText(String.join(", ", goals));
+        }
+
+        editProfileLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), UpdateProfileActivity.class);
                 startActivity(intent);
+                getActivity().finish();
+//                navController.navigate(R.id.action_profileInnerFragment_to_updateProfileFragment);
             }
         });
 
@@ -99,7 +122,11 @@ public class ProfileFragment extends Fragment {
 //        if (profileImageString.length() <= 0) {
 //            return view;
 //        }
-        return view;
+    }
+
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_profile, container, false);
+
     }
 
 //    @Override

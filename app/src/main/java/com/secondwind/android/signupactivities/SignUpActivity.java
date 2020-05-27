@@ -1,4 +1,4 @@
-package com.secondwind.android;
+package com.secondwind.android.signupactivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,10 +25,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.secondwind.android.R;
+import com.secondwind.android.classes.Member;
 
 public class SignUpActivity extends AppCompatActivity {
 
     DatabaseReference rref;
+    SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
     private FirebaseAuth mAuth;
@@ -47,6 +50,8 @@ public class SignUpActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         rref = FirebaseDatabase.getInstance().getReference().child(getString(R.string.firebase_db_members));
+        sharedPreferences = getSharedPreferences(getString(R.string.shared_prefs_name), MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
         usernameInput = findViewById(R.id.userNameInput);
         emailInput = findViewById(R.id.emailInput);

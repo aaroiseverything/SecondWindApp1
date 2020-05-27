@@ -1,4 +1,4 @@
-package com.secondwind.android;
+package com.secondwind.android.youtube;
 
 public class YoutubeConfig {
     public YoutubeConfig() {

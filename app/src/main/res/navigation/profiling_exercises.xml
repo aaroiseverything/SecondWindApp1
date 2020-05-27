@@ -7,16 +7,34 @@
 
     <fragment
         android:id="@+id/exerciseOneFragment"
-        android:name="com.secondwind.android.ExerciseOneFragment"
+        android:name="com.secondwind.android.exercisefragments.ExerciseOneFragment"
         android:label="fragment_exercise_one"
         tools:layout="@layout/fragment_exercise_one" >
         <action
-            android:id="@+id/action_exerciseOneFragment_to_exerciseTwoFragment"
-            app:destination="@id/exerciseTwoFragment" />
+            android:id="@+id/action_exerciseOneFragment_to_exerciseOneNoCamFragment"
+            app:destination="@id/exerciseOneNoCamFragment" />
     </fragment>
     <fragment
         android:id="@+id/exerciseTwoFragment"
-        android:name="com.secondwind.android.ExerciseTwoFragment"
+        android:name="com.secondwind.android.exercisefragments.ExerciseTwoFragment"
         android:label="fragment_exercise_two"
-        tools:layout="@layout/fragment_exercise_two" />
+        tools:layout="@layout/fragment_exercise_two" >
+        <action
+            android:id="@+id/action_exerciseTwoFragment_to_exerciseTwoNoCamFragment"
+            app:destination="@id/exerciseTwoNoCamFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exerciseOneNoCamFragment"
+        android:name="com.secondwind.android.exercisefragments.ExerciseOneNoCamFragment"
+        android:label="fragment_exercise_one_no_cam"
+        tools:layout="@layout/fragment_exercise_one_no_cam" >
+        <action
+            android:id="@+id/action_exerciseOneNoCamFragment_to_exerciseTwoFragment"
+            app:destination="@id/exerciseTwoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exerciseTwoNoCamFragment"
+        android:name="com.secondwind.android.exercisefragments.ExerciseTwoNoCamFragment"
+        android:label="fragment_exercise_two_no_cam"
+        tools:layout="@layout/fragment_exercise_two_no_cam" />
 </navigation>

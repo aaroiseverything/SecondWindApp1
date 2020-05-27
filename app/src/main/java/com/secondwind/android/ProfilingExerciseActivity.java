@@ -9,11 +9,12 @@ import android.view.MenuItem;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.secondwind.android.exercisefragments.ExerciseTwoNoCamFragment;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProfilingExerciseActivity extends AppCompatActivity implements ExerciseTwoFragment.ProfilingExerciseAddListener {
+public class ProfilingExerciseActivity extends AppCompatActivity implements ExerciseTwoNoCamFragment.ProfilingExerciseAddListener {
 
     SharedPreferences sharedPreferences;
     DatabaseReference rref;
