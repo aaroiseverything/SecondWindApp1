@@ -73,7 +73,7 @@ public class GenerateExerciseOneFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        mNextExBtn = view.findViewById(R.id.nextExBtn);
+        mNextExBtn = view.findViewById(R.id.doneBtn);
         mTextViewCountdown = view.findViewById(R.id.countdown);
         mProgressBar = view.findViewById(R.id.progressBar);
         mTextViewInfo = view.findViewById(R.id.startBtnInfo);

@@ -16,7 +16,6 @@ import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -75,7 +74,7 @@ public class ExerciseOneFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        mNextExBtn = view.findViewById(R.id.nextExBtn);
+        mNextExBtn = view.findViewById(R.id.doneBtn);
         mTextViewCountdown = view.findViewById(R.id.countdown);
         mProgressBar = view.findViewById(R.id.progressBar);
         mTextViewInfo = view.findViewById(R.id.startBtnInfo);

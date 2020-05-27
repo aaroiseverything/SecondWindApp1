@@ -3,15 +3,6 @@ package com.secondwind.android;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +12,21 @@ import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import java.util.Locale;
 
-public class ExerciseTwoFragment extends Fragment {
+public class GenerateExerciseFourFragment extends Fragment {
 
     private static final long END_TIME_IN_MILLIS = 120000;
-    private ProfilingExerciseAddListener callback;
+    private GenerateExerciseAddListener callback;
 
     NavController navController;
     private Button mNextExBtn;
@@ -43,17 +43,17 @@ public class ExerciseTwoFragment extends Fragment {
     private LinearLayout mChronometerWrapper;
 
 
-    public ExerciseTwoFragment() {
+    public GenerateExerciseFourFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        callback = (ProfilingExerciseAddListener) activity;
+        callback = (GenerateExerciseAddListener) activity;
     }
 
-    public interface ProfilingExerciseAddListener {
+    public interface GenerateExerciseAddListener {
         void onProfilingEnd();
         void updateFirebaseProfiling(String s, String input);
     }
@@ -70,7 +70,7 @@ public class ExerciseTwoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exercise_two, container, false);
+        return inflater.inflate(R.layout.fragment_generate_four, container, false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -173,7 +173,7 @@ public class ExerciseTwoFragment extends Fragment {
         Integer progress = (int) ((double) (pauseOffset) / ((double) END_TIME_IN_MILLIS) * 100);
         mProgressBar.setProgress(progress);
     }
-    // Updates firebase on number of planks
+    // Updates firebase
     private void checkAndUpdateResult() {
         String input = String.valueOf((int) pauseOffset / 1000);
         callback.updateFirebaseProfiling(getString(R.string.firebase_key_planks), input);

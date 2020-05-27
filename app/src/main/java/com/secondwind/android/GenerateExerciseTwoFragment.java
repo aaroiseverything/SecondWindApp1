@@ -70,7 +70,7 @@ public class GenerateExerciseTwoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exercise_two, container, false);
+        return inflater.inflate(R.layout.fragment_generate_two, container, false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -82,7 +82,7 @@ public class GenerateExerciseTwoFragment extends Fragment {
         mProgressBar = view.findViewById(R.id.progressBar);
         mTextViewInfo = view.findViewById(R.id.startBtnInfo);
         mResetBtn = view.findViewById(R.id.resetBtn);
-        mNextExBtn = view.findViewById(R.id.nextExBtn);
+        mNextExBtn = view.findViewById(R.id.doneBtn);
         mChronometerWrapper = view.findViewById(R.id.chronometerWrapper);
 
         mResetBtn.setOnClickListener(new View.OnClickListener() {

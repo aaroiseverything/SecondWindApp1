@@ -98,7 +98,7 @@
 
 
         <Button
-            android:id="@+id/nextExBtn"
+            android:id="@+id/doneBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
