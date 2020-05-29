@@ -76,8 +76,8 @@ public class GenerateExerciseThreeFragment extends Fragment {
     }
     // Updates firebase
     private void checkAndUpdateResult() {
-        //String input = String.valueOf((int) pauseOffset / 1000);
-        callback.updateFirebaseProfiling(getString(R.string.firebase_key_planks), input);
+//        String input = String.valueOf((int) pauseOffset / 1000);
+//        callback.updateFirebaseProfiling(getString(R.string.firebase_key_planks), input);
         callback.onProfilingEnd();
     }
 }

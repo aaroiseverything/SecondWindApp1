@@ -78,7 +78,7 @@ public class ExerciseTwoNoCamFragment extends Fragment {
         mProgressBar = view.findViewById(R.id.progressBar);
         mTextViewInfo = view.findViewById(R.id.startBtnInfo);
         mResetBtn = view.findViewById(R.id.resetBtn);
-        mNextExBtn = view.findViewById(R.id.doneBtn);
+        mNextExBtn = view.findViewById(R.id.nextExBtn);
         mChronometerWrapper = view.findViewById(R.id.chronometerWrapper);
 
         progressAnimator = ObjectAnimator.ofInt(mProgressBar, "progress", 1000, 0);

@@ -68,7 +68,7 @@ public class ExerciseTwoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        mNextExBtn = view.findViewById(R.id.nextExBtn);
+        mNextExBtn = view.findViewById(R.id.doneBtn);
         mNextExBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

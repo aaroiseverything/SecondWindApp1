@@ -21,6 +21,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.secondwind.android.youtube.YoutubeFragment;
+
 import java.util.Locale;
 
 public class GenerateExerciseFourFragment extends Fragment {
