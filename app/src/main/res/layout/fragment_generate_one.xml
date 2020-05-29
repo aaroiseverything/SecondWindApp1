@@ -42,65 +42,70 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="145dp"
+            android:background="@drawable/background_with_shadow"
+            android:fadingEdge="none">
 
-            <LinearLayout
-                android:id="@+id/countdownWrapper"
-                android:layout_width="135dp"
-                android:layout_height="135dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/btn_circle"
-                android:gravity="center"
-                android:orientation="vertical">
+            <TextView
+                android:id="@+id/day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="2dp"
+                android:gravity="center|left"
+                android:text=" 31 May"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/countdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text=""
-                    android:textColor="#ffffff"
-                    android:textSize="30sp" />
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
+                android:text="2 Sets"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/startBtnInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/start_ex"
-                    android:textColor="#ffffff" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/day"
+                android:layout_marginTop="5dp"
+                android:text="Pushups" />
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView2"
+                android:layout_marginTop="5dp"
+                android:text="Plank" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:progressBarStyleHorizontal"
-                android:layout_width="190dp"
-                android:layout_height="190dp"
-                android:layout_centerInParent="true"
-                android:progress="100"
-                android:progressDrawable="@drawable/progress_circle" />
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/day"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="0dp"
+                android:text="1 minute" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView4"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="0dp"
+                android:text="2 minute" />
+
         </RelativeLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="@string/number_of_pushups_done"
-            android:textColor="@color/colorPrimaryDark" />
-
-        <NumberPicker
-            android:id="@+id/numberPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:theme="@style/NumberPickerText"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/resetBtn"
@@ -115,8 +120,12 @@
             android:textColor="@color/colorPrimary"
             android:visibility="gone" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="234dp" />
+
         <Button
-            android:id="@+id/doneBtn"
+            android:id="@+id/editBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
@@ -127,6 +136,7 @@
             android:text="Edit Workout Configuration"
             android:textAllCaps="false"
             android:textColor="#000000" />
+
         <Button
             android:id="@+id/startExBtn"
             android:layout_width="match_parent"
@@ -139,10 +149,6 @@
             android:text="Start exercise"
             android:textAllCaps="false"
             android:textColor="#ffffff" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
     </LinearLayout>
 
 </LinearLayout>

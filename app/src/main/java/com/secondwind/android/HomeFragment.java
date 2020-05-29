@@ -17,6 +17,7 @@ public class HomeFragment extends Fragment {
     private EditProfileBtnAddListener callback;
     private RelativeLayout exerciseButton;
     private RelativeLayout updateProfile;
+    private RelativeLayout generateWorkoutButton;
     View view;
 
     @Nullable
@@ -24,8 +25,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //super.onViewCreated(view, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        updateProfile = view.findViewById(R.id.updateProfileButton);
+        updateProfile = (RelativeLayout) view.findViewById(R.id.updateProfileButton);
         exerciseButton = (RelativeLayout) view.findViewById(R.id.exerciseButton);
+        generateWorkoutButton = (RelativeLayout) view.findViewById(R.id.generateWorkoutButton);
 
         exerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +43,16 @@ public class HomeFragment extends Fragment {
                 callback.onEditProfileBtnSelected();
             }
         });
+
+        generateWorkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GenerateExerciseActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
+
     }
 
     @Override

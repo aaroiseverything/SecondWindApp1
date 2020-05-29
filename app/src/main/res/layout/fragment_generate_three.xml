@@ -43,45 +43,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:id="@+id/chronometerWrapper"
-                android:layout_width="135dp"
-                android:layout_height="135dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/btn_circle"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <Chronometer
-                    android:id="@+id/chronometer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text=""
-                    android:textColor="#ffffff"
-                    android:textSize="30sp" />
-
-                <TextView
-                    android:id="@+id/startBtnInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/start_ex"
-                    android:textColor="#ffffff" />
-
-            </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:progressBarStyleHorizontal"
-                android:layout_width="190dp"
-                android:layout_height="190dp"
-                android:layout_centerInParent="true"
-                android:progress="100"
-                android:progressDrawable="@drawable/progress_circle" />
-        </RelativeLayout>
+            android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/resetBtn"
