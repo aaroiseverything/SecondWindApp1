@@ -38,7 +38,6 @@
                 android:layout_width="135dp"
                 android:layout_height="135dp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/btn_circle"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -48,7 +47,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text=""
-                    android:textColor="#ffffff"
                     android:textSize="30sp" />
 
                 <TextView
@@ -56,8 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/start_ex"
-                    android:textColor="#ffffff" />
+                    android:text="@string/start_ex" />
 
             </LinearLayout>
 
@@ -67,8 +64,9 @@
                 android:layout_width="190dp"
                 android:layout_height="190dp"
                 android:layout_centerInParent="true"
-                android:progress="100"
-                android:progressDrawable="@drawable/progress_circle" />
+                android:progress="1000"
+                android:max="1000"
+                android:progressDrawable="@drawable/progress_countdown" />
         </RelativeLayout>
 
 

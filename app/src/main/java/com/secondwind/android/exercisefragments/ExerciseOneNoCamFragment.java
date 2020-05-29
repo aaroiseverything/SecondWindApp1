@@ -1,5 +1,6 @@
 package com.secondwind.android.exercisefragments;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -50,6 +52,7 @@ public class ExerciseOneNoCamFragment extends Fragment {
     private Button mNextExBtn;
     private ExerciseTwoNoCamFragment.ProfilingExerciseAddListener callback;
     private String mReps = "";
+    private ObjectAnimator progressAnimator;
 
     public ExerciseOneNoCamFragment() {
         // Required empty public constructor
@@ -79,10 +82,13 @@ public class ExerciseOneNoCamFragment extends Fragment {
         mProgressBar = view.findViewById(R.id.progressBar);
         mTextViewInfo = view.findViewById(R.id.startBtnInfo);
         mNextExBtn = view.findViewById(R.id.nextExBtn);
-
         mResetBtn = view.findViewById(R.id.resetBtn);
         mCountdownWrapper = view.findViewById(R.id.countdownWrapper);
         mNextExBtn = view.findViewById(R.id.nextExBtn);
+
+        progressAnimator = ObjectAnimator.ofInt(mProgressBar, "progress", 1000, 0);
+        progressAnimator.setDuration(START_TIME_IN_MILLIS);
+        progressAnimator.setInterpolator(new LinearInterpolator());
 
         mNextExBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,11 +129,12 @@ public class ExerciseOneNoCamFragment extends Fragment {
             }
         });
 
-
         mResetBtn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
+                progressAnimator.end();
+                mProgressBar.setProgress(1000);
                 mTimeLeftInMillis = START_TIME_IN_MILLIS;
                 finished = false;
                 mTextViewInfo.setText(R.string.start_ex);
@@ -155,6 +162,12 @@ public class ExerciseOneNoCamFragment extends Fragment {
     }
 
     private void startTimer() {
+        if (mTimeLeftInMillis == START_TIME_IN_MILLIS) {
+            progressAnimator.start();
+        } else {
+            progressAnimator.resume();
+        }
+
         mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -179,8 +192,8 @@ public class ExerciseOneNoCamFragment extends Fragment {
         int minutes = (int) (mTimeLeftInMillis / 1000) / 60;
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
 
-        Integer progress = (int) ((double) mTimeLeftInMillis / 1000 / ((double) startTimeInSeconds) * 100);
-        mProgressBar.setProgress(progress);
+//        Integer progress = (int) ((double) mTimeLeftInMillis / 1000 / ((double) startTimeInSeconds) * 100);
+//        mProgressBar.setProgress(progress);
 
         String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
         mTextViewCountdown.setText(timeLeftFormatted);
@@ -188,6 +201,7 @@ public class ExerciseOneNoCamFragment extends Fragment {
 
     private void pauseTimer() {
         mCountDownTimer.cancel();
+        progressAnimator.pause();
         mTimerRunning = false;
     }
 

@@ -1,5 +1,6 @@
 package com.secondwind.android.exercisefragments;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
@@ -38,6 +40,7 @@ public class ExerciseTwoNoCamFragment extends Fragment {
     private Chronometer mChronometer;
     private long pauseOffset = 0;
     private LinearLayout mChronometerWrapper;
+    private ObjectAnimator progressAnimator;
 
     public ExerciseTwoNoCamFragment() {
         // Required empty public constructor
@@ -78,11 +81,16 @@ public class ExerciseTwoNoCamFragment extends Fragment {
         mNextExBtn = view.findViewById(R.id.nextExBtn);
         mChronometerWrapper = view.findViewById(R.id.chronometerWrapper);
 
+        progressAnimator = ObjectAnimator.ofInt(mProgressBar, "progress", 1000, 0);
+        progressAnimator.setDuration(END_TIME_IN_MILLIS);
+        progressAnimator.setInterpolator(new LinearInterpolator());
+
         mResetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressAnimator.end();
+                mProgressBar.setProgress(1000);
                 resetChronometer();
-                updateProgressbar();
             }
         });
 
@@ -97,11 +105,19 @@ public class ExerciseTwoNoCamFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (mTimerRunning) {
+                    progressAnimator.pause();
                     mTextViewInfo.setText(R.string.continue_ex);
                     pauseChronometer();
                     mResetBtn.setVisibility(View.VISIBLE);
                     mNextExBtn.setVisibility(View.VISIBLE);
-                } else if (finished == false) {
+                } else if (!finished && pauseOffset > 0) {
+                    progressAnimator.resume();
+                    mTextViewInfo.setText(R.string.pause_ex);
+                    startChronometer();
+                    mResetBtn.setVisibility(View.GONE);
+                    mNextExBtn.setVisibility(View.GONE);
+                } else if (!finished) {
+                    progressAnimator.start();
                     mTextViewInfo.setText(R.string.pause_ex);
                     startChronometer();
                     mResetBtn.setVisibility(View.GONE);
@@ -114,7 +130,6 @@ public class ExerciseTwoNoCamFragment extends Fragment {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
                 pauseOffset = SystemClock.elapsedRealtime() - mChronometer.getBase();
-                updateProgressbar();
                 String currentTime = mChronometer.getText().toString();
 
                 int minutes = (int) (END_TIME_IN_MILLIS / 1000) / 60;
@@ -132,15 +147,13 @@ public class ExerciseTwoNoCamFragment extends Fragment {
                 }
             }
         });
-
-        updateProgressbar();
     }
 
 
-    private void updateProgressbar() {
-        Integer progress = (int) ((double) (pauseOffset) / ((double) END_TIME_IN_MILLIS) * 100);
-        mProgressBar.setProgress(progress);
-    }
+//    private void updateProgressbar() {
+//        Integer progress = (int) ((double) (pauseOffset) / ((double) END_TIME_IN_MILLIS) * 100);
+//        mProgressBar.setProgress(progress);
+//    }
 
     private void checkAndUpdateResult() {
         String input = String.valueOf((int) pauseOffset / 1000);
