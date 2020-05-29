@@ -28,9 +28,7 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.secondwind.android.R;
-
 import java.util.Locale;
 
 

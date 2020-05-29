@@ -9,7 +9,7 @@
         android:id="@+id/exerciseOneFragment"
         android:name="com.secondwind.android.exercisefragments.ExerciseOneFragment"
         android:label="fragment_exercise_one"
-        tools:layout="@layout/fragment_exercise_one" >
+        tools:layout="@layout/fragment_exercise_one">
         <action
             android:id="@+id/action_exerciseOneFragment_to_exerciseOneNoCamFragment"
             app:destination="@id/exerciseOneNoCamFragment" />

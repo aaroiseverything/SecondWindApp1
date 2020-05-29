@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profiling_exercises"
+    app:startDestination="@id/generateExerciseOneFragment">
+
+    <fragment
+        android:id="@+id/generateExerciseOneFragment"
+        android:name="com.secondwind.android.GenerateExerciseOneFragment"
+        android:label="GenerateExerciseOneFragment"
+        tools:layout="@layout/fragment_generate_one">
+        <action
+            android:id="@+id/action_generateExerciseOneFragment_to_generateExerciseTwoFragment"
+            app:destination="@id/generateExerciseTwoFragment" />
+        <action
+            android:id="@+id/action_generateExerciseOneFragment_to_generateExerciseThreeFragment"
+            app:destination="@id/generateExerciseThreeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/generateExerciseTwoFragment"
+        android:name="com.secondwind.android.GenerateExerciseTwoFragment"
+        android:label="GenerateExerciseTwoFragment"
+        tools:layout="@layout/fragment_generate_two" />
+    <fragment
+        android:id="@+id/generateExerciseFourFragment"
+        android:name="com.secondwind.android.GenerateExerciseFourFragment"
+        android:label="GenerateExerciseFourFragment"
+        tools:layout="@layout/fragment_generate_four" />
+    <fragment
+        android:id="@+id/generateExerciseThreeFragment"
+        android:name="com.secondwind.android.GenerateExerciseThreeFragment"
+        android:label="GenerateExerciseThreeFragment"
+        tools:layout="@layout/fragment_generate_three">
+        <action
+            android:id="@+id/action_generateExerciseThreeFragment_to_generateExerciseFourFragment"
+            app:destination="@id/generateExerciseFourFragment" />
+    </fragment>
+</navigation>
