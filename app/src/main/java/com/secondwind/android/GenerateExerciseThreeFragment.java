@@ -28,7 +28,7 @@ public class GenerateExerciseThreeFragment extends Fragment {
     private GenerateExerciseAddListener callback;
 
     NavController navController;
-    private Button mNextExBtn;
+    private Button startExBtn, editWorkoutBtn;
     String firebaseKey;
 
 
@@ -39,7 +39,7 @@ public class GenerateExerciseThreeFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        callback = (GenerateExerciseAddListener) activity;
+        //callback = (GenerateExerciseAddListener) activity;
     }
 
     public interface GenerateExerciseAddListener {
@@ -65,12 +65,20 @@ public class GenerateExerciseThreeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        mNextExBtn = view.findViewById(R.id.doneBtn);
+        startExBtn = view.findViewById(R.id.startExBtn);
+        editWorkoutBtn = view.findViewById(R.id.editWorkoutBtn);
 
-        mNextExBtn.setOnClickListener(new View.OnClickListener() {
+        startExBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAndUpdateResult();
+                //checkAndUpdateResult();
+                navController.navigate(R.id.action_generateExerciseThreeFragment_to_generateExerciseFourFragment);
+            }
+        });
+        editWorkoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.action_generateExerciseThreeFragment_to_generateExerciseTwoFragment);
             }
         });
     }

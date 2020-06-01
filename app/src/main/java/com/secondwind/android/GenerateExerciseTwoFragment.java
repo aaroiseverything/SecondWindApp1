@@ -8,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,7 +30,9 @@ public class GenerateExerciseTwoFragment extends Fragment {
     private GenerateExerciseAddListener callback;
 
     NavController navController;
-    private Button mNextExBtn;
+    private Button mDoneBtn;
+    private SeekBar seekbar2, seekBar3;
+    private CheckBox checkBox;
     String firebaseKey;
 
 
@@ -67,20 +71,14 @@ public class GenerateExerciseTwoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        mResetBtn = view.findViewById(R.id.resetBtn);
-        mNextExBtn = view.findViewById(R.id.doneBtn);
+        mDoneBtn = view.findViewById(R.id.doneBtn);
 
-        mResetBtn.setOnClickListener(new View.OnClickListener() {
+
+
+        mDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            }
-        });
-
-        mNextExBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.action_generateExerciseThreeFragment_to_generateExerciseFourFragment);
+                navController.navigate(R.id.action_generateExerciseTwoFragment_to_generateExerciseOneFragment);
             }
         });
 

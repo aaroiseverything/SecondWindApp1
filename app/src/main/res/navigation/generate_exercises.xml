@@ -21,7 +21,11 @@
         android:id="@+id/generateExerciseTwoFragment"
         android:name="com.secondwind.android.GenerateExerciseTwoFragment"
         android:label="GenerateExerciseTwoFragment"
-        tools:layout="@layout/fragment_generate_two" />
+        tools:layout="@layout/fragment_generate_two" >
+        <action
+            android:id="@+id/action_generateExerciseTwoFragment_to_generateExerciseOneFragment"
+            app:destination="@id/generateExerciseOneFragment" />
+    </fragment>
     <fragment
         android:id="@+id/generateExerciseFourFragment"
         android:name="com.secondwind.android.GenerateExerciseFourFragment"
@@ -35,5 +39,8 @@
         <action
             android:id="@+id/action_generateExerciseThreeFragment_to_generateExerciseFourFragment"
             app:destination="@id/generateExerciseFourFragment" />
+        <action
+            android:id="@+id/action_generateExerciseThreeFragment_to_generateExerciseTwoFragment"
+            app:destination="@id/generateExerciseTwoFragment" />
     </fragment>
 </navigation>

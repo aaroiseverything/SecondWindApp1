@@ -1,6 +1,7 @@
 package com.secondwind.android;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -31,7 +32,7 @@ public class GenerateExerciseFourFragment extends Fragment {
     private GenerateExerciseAddListener callback;
 
     NavController navController;
-    private Button mNextExBtn;
+    private Button mNextExBtn, completeExBtn;
     String firebaseKey;
 
     private boolean finished;
@@ -52,7 +53,7 @@ public class GenerateExerciseFourFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        callback = (GenerateExerciseAddListener) activity;
+        //callback = (GenerateExerciseAddListener) activity;
     }
 
     public interface GenerateExerciseAddListener {
@@ -63,9 +64,7 @@ public class GenerateExerciseFourFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        youtubeFragment = YoutubeFragment.newInstance(getString(R.string.youtube_two_id));
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(R.id.flYoutube, youtubeFragment).commit();
+
     }
 
     @Override
@@ -84,7 +83,8 @@ public class GenerateExerciseFourFragment extends Fragment {
         mProgressBar = view.findViewById(R.id.progressBar);
         mTextViewInfo = view.findViewById(R.id.startBtnInfo);
         mResetBtn = view.findViewById(R.id.resetBtn);
-        mNextExBtn = view.findViewById(R.id.doneBtn);
+        mNextExBtn = view.findViewById(R.id.nextExBtn);
+        completeExBtn = view.findViewById(R.id.completeExBtn);
         mChronometerWrapper = view.findViewById(R.id.chronometerWrapper);
 
         mResetBtn.setOnClickListener(new View.OnClickListener() {
@@ -102,10 +102,18 @@ public class GenerateExerciseFourFragment extends Fragment {
             }
         });
 
+        completeExBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkAndUpdateResult();
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
         mChronometerWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                youtubeFragment.pauseVid();
                 if (mTimerRunning) {
                     mTextViewInfo.setText(R.string.continue_ex);
                     pauseChronometer();

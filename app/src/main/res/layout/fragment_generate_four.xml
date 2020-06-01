@@ -2,80 +2,126 @@
 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".GenerateExerciseFourFragment">
 
-    <FrameLayout
-        android:id="@+id/flYoutube"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:orientation="vertical">
+        android:layout_marginEnd="10dp">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="Exercise 1: \n 1 min of push ups"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/title_size"
-            android:textStyle="bold"
-            tools:ignore="SpUsage" />
-
-        <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:text="@string/ex_2_description"
-            android:textColor="@color/colorPrimaryDark" />
+            android:text="@string/ex_2_title"
+            android:textSize="@dimen/title_size"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpUsage" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
 
-        <Button
-            android:id="@+id/resetBtn"
+            <LinearLayout
+                android:id="@+id/chronometerWrapper"
+                android:layout_width="135dp"
+                android:layout_height="135dp"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Chronometer
+                    android:id="@+id/chronometer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text=""
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/startBtnInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/start_ex" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:progressBarStyleHorizontal"
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:layout_centerInParent="true"
+                android:layoutDirection="rtl"
+                android:max="1000"
+                android:progress="1000"
+                android:progressDrawable="@drawable/progress_countup" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="4dp"
-            android:minHeight="45dp"
-            android:text="@string/reset"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimary"
-            android:visibility="gone" />
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
 
+            <Button
+                android:id="@+id/completeExBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/btn_background"
+                android:minHeight="45dp"
+                android:text="Complete exercise"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:visibility="visible" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            <Button
+                android:id="@+id/resetBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="4dp"
+                android:minHeight="45dp"
+                android:text="@string/reset"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary"
+                android:visibility="gone" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/nextExBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/btn_background"
+                android:minHeight="45dp"
+                android:text="@string/complete"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:visibility="gone" />
 
-    <Button
-        android:id="@+id/conpleteExerciseBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginRight="4dp"
-        android:background="@drawable/btn_background"
-        android:minHeight="45dp"
-        android:text="Complete exercise"
-        android:textAllCaps="false"
-        android:textColor="#ffffff"
-        android:visibility="visible" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

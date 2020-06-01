@@ -2,80 +2,111 @@
 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".GenerateExerciseThreeFragment">
 
-    <FrameLayout
-        android:id="@+id/flYoutube"
+    <ScrollView
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:fillViewport="true"
+        tools:context=".exercisefragments.ExerciseOneFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+
+            <FrameLayout
+                android:id="@+id/flYoutube"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/doneBtn"
+                app:layout_constraintTop_toBottomOf="@+id/flYoutube"
+                tools:context=".exercisefragments.ExerciseOneFragment"
+                tools:layout_editor_absoluteX="10dp">
+
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="200dp"
+                    android:gravity="center"
+                    android:text="Exercise 1: \n 1 min of push ups"
+                    android:textSize="@dimen/title_size"
+                    android:textStyle="bold"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="@string/ex_1_description" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible" />
+        android:layout_marginBottom="20dp"
+        android:text="Launch form checker (Recommended)"
+        android:textStyle="bold" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="Workout Configuration"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/title_size"
-            android:textStyle="bold"
-            tools:ignore="SpUsage" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:text="@string/ex_2_description"
-            android:textColor="@color/colorPrimaryDark" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/resetBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="4dp"
-            android:minHeight="45dp"
-            android:text="@string/reset"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimary"
-            android:visibility="gone" />
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-    </LinearLayout>
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="16dp"
+        android:thumbTint="#3C3B3B" />
 
     <Button
-        android:id="@+id/doneBtn"
+        android:id="@+id/editWorkoutBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginRight="4dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/colorAccentOne"
+        android:gravity="center_horizontal|center_vertical"
+        android:minHeight="45dp"
+        android:text="Edit Workout Configuration"
+        android:textAllCaps="false"
+        android:textColor="#000000" />
+
+    <Button
+        android:id="@+id/startExBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/btn_background"
         android:minHeight="45dp"
-        android:text="done"
+        android:text="Start Exercise"
         android:textAllCaps="false"
-        android:textColor="#ffffff"
-        android:visibility="visible" />
+        android:textColor="#ffffff" />
+
 </LinearLayout>
