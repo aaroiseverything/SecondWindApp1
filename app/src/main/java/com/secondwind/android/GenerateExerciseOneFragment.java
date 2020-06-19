@@ -150,6 +150,7 @@ public class GenerateExerciseOneFragment extends Fragment {
                     public void onCancelled(@NonNull DatabaseError databaseError) { }
                 });
             }
+
         });
 
 
@@ -164,7 +165,13 @@ public class GenerateExerciseOneFragment extends Fragment {
         startExBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.navigate(R.id.action_generateExerciseOneFragment_to_generateExerciseThreeFragment);
+                //using Bundle to send data  https://developer.android.com/guide/navigation/navigation-pass-data#java
+                Bundle bundle=new Bundle();
+                for (int i = 0; i < myArrayList.size(); i++) {
+                    bundle.putString("Exercise "+ String.valueOf(i), myArrayList.get(i));
+                } //bundle has "Exercise 1":"donkey kicks, 12 reps"
+                bundle.putString("test1","shoulderssz");
+                navController.navigate(R.id.action_generateExerciseOneFragment_to_generateExerciseThreeFragment, bundle);
             }
         });
 

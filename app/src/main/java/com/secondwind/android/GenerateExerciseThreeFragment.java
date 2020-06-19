@@ -1,5 +1,6 @@
 package com.secondwind.android;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class GenerateExerciseThreeFragment extends Fragment {
 
     NavController navController;
     private Button startExBtn, editWorkoutBtn;
+    private TextView textExercise;
     String firebaseKey;
 
 
@@ -60,6 +62,7 @@ public class GenerateExerciseThreeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_generate_three, container, false);
     }
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -67,6 +70,9 @@ public class GenerateExerciseThreeFragment extends Fragment {
         navController = Navigation.findNavController(view);
         startExBtn = view.findViewById(R.id.startExBtn);
         editWorkoutBtn = view.findViewById(R.id.editWorkoutBtn);
+        textExercise = view.findViewById(R.id.textView22);
+
+        textExercise.setText("Exercise 1: \n"+ getArguments().getString("Exercise 1"));  //This gets the exercises from the bundle from ExOneFrag
 
         startExBtn.setOnClickListener(new View.OnClickListener() {
             @Override
