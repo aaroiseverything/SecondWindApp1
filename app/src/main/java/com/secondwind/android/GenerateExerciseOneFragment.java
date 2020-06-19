@@ -107,14 +107,12 @@ public class GenerateExerciseOneFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String lastWorkout = dataSnapshot.child("lastWorkout").getValue().toString();
                 Integer last = Integer.parseInt(lastWorkout);
-                workout1.setText(lastWorkout);
                 //Finding out their Workout Focus
                 if (dataSnapshot.exists()){
                     workoutFocus.clear();
                     for (DataSnapshot dss:dataSnapshot.child("workoutFocus").getChildren()) {
                         String focus = dss.getValue(String.class);
                         workoutFocus.add(focus);
-                        workout2.setText(focus);
                     }
                 }
                 if (workoutFocus.contains("Core") && last%2==0){
