@@ -97,7 +97,6 @@ public class GenerateExerciseTwoFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         // Initalise list of goals
-        //Set<String> goalsSet = sharedPreferences.getStringSet("workoutConfiguration", new HashSet<>());
         equipment = new ArrayList<>();
 
         navController = Navigation.findNavController(view);

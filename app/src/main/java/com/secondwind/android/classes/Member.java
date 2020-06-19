@@ -1,5 +1,6 @@
 package com.secondwind.android.classes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Member {
@@ -8,6 +9,8 @@ public class Member {
     private String GoogleId;
     private String LoginType;
     private String PhotoUrl;
+    private String LastWorkout;
+    //private ArrayList WorkoutFocus;
 
     public Member() {
 
@@ -54,5 +57,20 @@ public class Member {
     public void setPhotoUrl(String photoUrl) {
         PhotoUrl = photoUrl;
     }
+
+    public String getLastWorkout() {
+        return LastWorkout;
+    }
+
+    public void setLastWorkout(String lastWorkout) {
+        LastWorkout = lastWorkout;
+    }
+//    public List getWorkoutFocus() {
+//        return WorkoutFocus;
+//    }
+//
+//    public void setWorkoutFocus(ArrayList workoutFocus) {
+//        WorkoutFocus = workoutFocus;
+//    }
 
 }

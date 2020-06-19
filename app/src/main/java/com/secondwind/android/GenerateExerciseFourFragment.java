@@ -2,6 +2,7 @@ package com.secondwind.android;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -22,6 +23,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.secondwind.android.youtube.YoutubeFragment;
 
 import java.util.Locale;
@@ -34,6 +41,10 @@ public class GenerateExerciseFourFragment extends Fragment {
     NavController navController;
     private Button mNextExBtn, completeExBtn;
     String firebaseKey;
+    private DatabaseReference rrefm;
+    private FirebaseAuth mAuth;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     private boolean finished;
     private ProgressBar mProgressBar;
@@ -44,6 +55,7 @@ public class GenerateExerciseFourFragment extends Fragment {
     private Chronometer mChronometer;
     private long pauseOffset = 0;
     private LinearLayout mChronometerWrapper;
+    private String last;
 
 
     public GenerateExerciseFourFragment() {
@@ -78,6 +90,10 @@ public class GenerateExerciseFourFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sharedPreferences = this.getContext().getSharedPreferences(getString(R.string.shared_prefs_name), this.getContext().MODE_PRIVATE);
+        firebaseKey = sharedPreferences.getString("firebaseKey", "");
+        mAuth = FirebaseAuth.getInstance();
+        rrefm = FirebaseDatabase.getInstance().getReference().child("Members").child(firebaseKey);
         navController = Navigation.findNavController(view);
         mChronometer = view.findViewById(R.id.chronometer);
         mProgressBar = view.findViewById(R.id.progressBar);
@@ -86,7 +102,15 @@ public class GenerateExerciseFourFragment extends Fragment {
         mNextExBtn = view.findViewById(R.id.nextExBtn);
         completeExBtn = view.findViewById(R.id.completeExBtn);
         mChronometerWrapper = view.findViewById(R.id.chronometerWrapper);
+        rrefm.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                last = dataSnapshot.child("lastWorkout").getValue().toString();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }});
         mResetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,7 +129,9 @@ public class GenerateExerciseFourFragment extends Fragment {
         completeExBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAndUpdateResult();
+                //checkAndUpdateResult();
+                //callback.updateFirebaseProfiling(firebaseKey, String.valueOf(Integer.valueOf(lastWorkout)+1));
+                rrefm.child("lastWorkout").setValue(String.valueOf(Integer.valueOf(last)+1));
                 Intent intent = new Intent(getActivity(), HomeActivity.class);
                 startActivity(intent);
             }
@@ -154,7 +180,9 @@ public class GenerateExerciseFourFragment extends Fragment {
         updateProgressbar();
     }
 
-    public void startChronometer() {
+
+
+            public void startChronometer() {
         if (!mTimerRunning) {
             mChronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
             mChronometer.start();
@@ -186,7 +214,7 @@ public class GenerateExerciseFourFragment extends Fragment {
     // Updates firebase
     private void checkAndUpdateResult() {
         String input = String.valueOf((int) pauseOffset / 1000);
-        callback.updateFirebaseProfiling(getString(R.string.firebase_key_planks), input);
+//        callback.updateFirebaseProfiling(getString(R.string.firebase_key_planks), Integer.valueOf(lastWorkout)+1);
         callback.onProfilingEnd();
     }
 }

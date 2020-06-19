@@ -28,6 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.secondwind.android.R;
 import com.secondwind.android.classes.Member;
 
+import java.util.ArrayList;
+
 public class SignUpActivity extends AppCompatActivity {
 
     DatabaseReference rref;
@@ -39,6 +41,7 @@ public class SignUpActivity extends AppCompatActivity {
     private Button signUpButton;
     private String defaultProfilePic;
     private EditText usernameInput, emailInput, pwInput;
+    private ArrayList<String> workoutFocus;
     private Member member;
 
 
@@ -168,6 +171,11 @@ public class SignUpActivity extends AppCompatActivity {
         member.setUsername(username);
         member.setPhotoUrl(defaultProfilePic);
         member.setLoginType(getString(R.string.login_type_auth));
+        member.setLastWorkout("0");
+//        workoutFocus = new ArrayList<>();
+//        workoutFocus.add("Core");
+//        workoutFocus.add("Lower");
+//        member.setWorkoutFocus(workoutFocus);
 
         rref.push().setValue(member);
     }
